@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         title: const Text(
-          'Списки задач',
+          'Главная страница',
         ),
         automaticallyImplyLeading: false,
         actions: [

@@ -105,7 +105,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               ),
               360.ph,
               GamaTextButton(
-                text: 'Сохранить',
+                text: 'Создать',
                 color: const Color.fromRGBO(38, 136, 235, 1),
                 onTap: () => context.pop(),
               ),
