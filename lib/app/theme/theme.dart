@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
+  fontFamily: 'VKSansDisplay',
   scaffoldBackgroundColor: const Color.fromRGBO(235, 237, 240, 1),
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(
@@ -22,13 +23,19 @@ final lightTheme = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
-    hintStyle: const TextStyle(fontFamily: 'VKSansDisplay'),
-    filled: true,
+    hintStyle: const TextStyle(
+      fontFamily: 'VKSansDisplay',
+    ),
     fillColor: const Color.fromRGBO(242, 243, 245, 1),
     enabledBorder: OutlineInputBorder(
       borderSide: const BorderSide(color: Colors.black12),
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(10),
     ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Color.fromRGBO(38, 136, 235, 1)),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    contentPadding: const EdgeInsets.only(left: 15),
   ),
   textTheme: const TextTheme(
     bodyMedium: TextStyle(

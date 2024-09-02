@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_app/pages/login_page/widgets/widgets.dart';
-import 'package:task_app/repositories/sizes/custom_padding.dart';
+import 'package:task_app/app/extensions/custom_padding.dart';
+import 'package:task_app/app/widgets/widgets.dart';
 
 class CreateList extends StatefulWidget {
   const CreateList({super.key});
@@ -27,7 +27,7 @@ class _CreateListState extends State<CreateList> {
               const SizedBox(height: 40, child: TextField()),
               10.ph,
               650.ph,
-              GamaTextButton(
+              TaskTextButton(
                 text: 'Создать',
                 color: const Color.fromRGBO(38, 136, 235, 1),
                 onTap: () => context.pop(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_app/theme/box_decoration.dart';
+import 'package:task_app/app/pages/home_page/widgets/widgets.dart';
+import 'package:task_app/app/theme/box_decoration.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,22 +27,14 @@ class _HomePageState extends State<HomePage> {
           'Главная страница',
         ),
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.push('/create-list');
-            },
-            icon: const Icon(
-              Icons.add,
-              size: 30,
-            ),
-          ),
+        actions: const [
+          AddButton(),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0),
+        padding: const EdgeInsets.only(left: 40.0, right: 40.0),
         child: ListView.separated(
-          itemCount: 2,
+          itemCount: 4,
           separatorBuilder: (context, index) => const Divider(
             height: 32,
           ),
@@ -52,8 +45,8 @@ class _HomePageState extends State<HomePage> {
                 decoration: boxDecor,
                 height: 91,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 1, bottom: 1),
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 1),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

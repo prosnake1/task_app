@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_app/pages/login_page/widgets/widgets.dart';
-import 'package:task_app/repositories/sizes/custom_padding.dart';
+import 'package:task_app/app/extensions/custom_padding.dart';
+import 'package:task_app/app/widgets/widgets.dart';
 
 class CreateTaskPage extends StatefulWidget {
   const CreateTaskPage({super.key});
@@ -104,7 +104,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ),
               ),
               360.ph,
-              GamaTextButton(
+              TaskTextButton(
                 text: 'Создать',
                 color: const Color.fromRGBO(38, 136, 235, 1),
                 onTap: () => context.pop(),

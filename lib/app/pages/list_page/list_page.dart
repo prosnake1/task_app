@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_app/theme/box_decoration.dart';
+import 'package:task_app/app/theme/box_decoration.dart';
+import 'package:task_app/app/widgets/widgets.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key});
@@ -14,7 +15,7 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Задача'),
+        title: const Text('Задача'),
         actions: [
           IconButton(
             onPressed: () {
@@ -36,7 +37,6 @@ class _ListPageState extends State<ListPage> {
           ),
           itemBuilder: (context, index) {
             return InkWell(
-              onTap: () => null,
               child: Container(
                 decoration: boxDecor,
                 height: 150,
@@ -63,7 +63,7 @@ class _ListPageState extends State<ListPage> {
                             style: Theme.of(context).textTheme.labelMedium,
                             textAlign: TextAlign.left,
                           ),
-                          MySwitch()
+                          const MySwitch()
                         ],
                       ),
                     ],
@@ -74,31 +74,6 @@ class _ListPageState extends State<ListPage> {
           },
         ),
       ),
-    );
-  }
-}
-
-class MySwitch extends StatefulWidget {
-  const MySwitch({
-    super.key,
-  });
-
-  @override
-  State<MySwitch> createState() => _MySwitchState();
-}
-
-class _MySwitchState extends State<MySwitch> {
-  bool light = true;
-  @override
-  Widget build(BuildContext context) {
-    return Switch(
-      value: light,
-      activeColor: const Color.fromRGBO(38, 136, 235, 1),
-      onChanged: (bool value) {
-        setState(() {
-          light = value;
-        });
-      },
     );
   }
 }
