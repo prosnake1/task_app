@@ -5,17 +5,22 @@ class TaskTextButton extends StatelessWidget {
       {super.key,
       required this.text,
       required this.color,
-      required this.onTap});
+      required this.onTap,
+      this.isActivated});
   final String text;
   final Color color;
   final Function() onTap;
+  final bool? isActivated;
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       child: TextButton(
-        onPressed: onTap,
-        style: ButtonStyle(backgroundColor: WidgetStateProperty.all(color)),
+        onPressed: (isActivated == null || isActivated != false) ? onTap : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          disabledBackgroundColor: color.withOpacity(0.4),
+        ),
         child: SizedBox(
           width: 340,
           height: 24,

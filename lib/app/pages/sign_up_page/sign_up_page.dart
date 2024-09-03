@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
@@ -12,7 +11,11 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   late FocusNode _focusNode;
+  String text = 'Далее';
+  bool isActivated = false;
+  bool isVisible = false;
   var emailController = TextEditingController();
+  var passController = TextEditingController();
   @override
   void initState() {
     _focusNode = FocusNode();
@@ -42,16 +45,48 @@ class _SignUpPageState extends State<SignUpPage> {
                   20.ph,
                   TaskTextField(
                     text: 'Почта',
+                    controller: emailController,
+                    onChanged: (value) {
+                      if (value.contains('@') && value.isNotEmpty) {
+                        setState(() {
+                          isActivated = true;
+                        });
+                      } else {
+                        setState(() {
+                          isActivated = false;
+                        });
+                      }
+                    },
                     autoFocus: true,
                     focusNode: _focusNode,
+                  ),
+                  30.ph,
+                  Visibility(
+                    visible: isVisible,
+                    child: TaskTextField(
+                      text: 'Придумайте пароль',
+                      controller: passController,
+                    ),
                   )
                 ],
               ),
             ),
             TaskTextButton(
-              text: 'Продолжить',
+              text: text,
               color: const Color.fromRGBO(38, 136, 235, 1),
-              onTap: () => context.push('/'),
+              isActivated: isActivated,
+              onTap: () {
+                if (isVisible == false) {
+                  setState(() {
+                    isVisible = true;
+                  });
+                }
+                if (isVisible == true) {
+                  setState(() {
+                    text = 'Создать аккаунт';
+                  });
+                }
+              },
             ),
             10.ph,
           ],
