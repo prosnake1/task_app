@@ -11,29 +11,45 @@ class CreateList extends StatefulWidget {
 }
 
 class _CreateListState extends State<CreateList> {
+  var nameController = TextEditingController();
+  late FocusNode _focusNode;
+  @override
+  void initState() {
+    _focusNode = FocusNode();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Создать список'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Название', style: TextStyle(fontSize: 18)),
-              const SizedBox(height: 40, child: TextField()),
-              10.ph,
-              650.ph,
-              TaskTextButton(
-                text: 'Создать',
-                color: const Color.fromRGBO(38, 136, 235, 1),
-                onTap: () => context.pop(),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  const Text('Список'),
+                  TaskTextField(
+                    text: 'Название',
+                    controller: nameController,
+                    autoFocus: true,
+                    focusNode: _focusNode,
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+            10.ph,
+            TaskTextButton(
+              text: 'Создать',
+              color: const Color.fromRGBO(38, 136, 235, 1),
+              onTap: () => context.pop(),
+            ),
+          ],
         ),
       ),
     );

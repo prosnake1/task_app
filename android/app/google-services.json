@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "706068286653",
-    "project_id": "task-app-6b0ef",
-    "storage_bucket": "task-app-6b0ef.appspot.com"
+    "project_number": "1091103937227",
+    "firebase_url": "https://task-app-c9e5b-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "task-app-c9e5b",
+    "storage_bucket": "task-app-c9e5b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:706068286653:android:7499e8a07141e52000fbd4",
+        "mobilesdk_app_id": "1:1091103937227:android:e498daeb60a6ade3e4014e",
         "android_client_info": {
           "package_name": "com.bogdan.task_app"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAk0NeWQ8-wrj4vivOsJNQkPWO2XNhz73M"
+          "current_key": "AIzaSyDkMnTu3t5aPxARwFfgRkB0EBgt1TT51aY"
         }
       ],
       "services": {

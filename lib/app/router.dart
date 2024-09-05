@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/pages/pages.dart';
 
 GoRouter router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: (FirebaseAuth.instance.currentUser == null) ? '/login' : '/',
   routes: <RouteBase>[
     GoRoute(
       path: '/',

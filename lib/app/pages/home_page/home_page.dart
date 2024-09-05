@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/pages/home_page/widgets/widgets.dart';
@@ -27,6 +28,12 @@ class _HomePageState extends State<HomePage> {
           'Главная страница',
         ),
         automaticallyImplyLeading: false,
+        leading: IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              context.go('/login');
+            },
+            icon: const Icon(Icons.logout)),
         actions: const [
           AddButton(),
         ],

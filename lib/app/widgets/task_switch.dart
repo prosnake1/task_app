@@ -4,7 +4,6 @@ class MySwitch extends StatefulWidget {
   const MySwitch({
     super.key,
   });
-
   @override
   State<MySwitch> createState() => _MySwitchState();
 }
