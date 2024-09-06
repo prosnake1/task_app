@@ -81,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                                 msg:
                                     'Вы вошли в аккаунт ${FirebaseAuth.instance.currentUser!.email}');
 
+                            // ignore: use_build_context_synchronously
                             context.go('/');
                           }
                         } on FirebaseAuthException catch (e) {

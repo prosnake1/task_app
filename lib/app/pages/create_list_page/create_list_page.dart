@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
@@ -47,7 +49,17 @@ class _CreateListState extends State<CreateList> {
             TaskTextButton(
               text: 'Создать',
               color: const Color.fromRGBO(38, 136, 235, 1),
-              onTap: () => context.pop(),
+              onTap: () async {
+                final DatabaseReference listRef = FirebaseDatabase.instance
+                    .ref()
+                    .child('users')
+                    .child(FirebaseAuth.instance.currentUser!.uid)
+                    .child('lists');
+                await listRef
+                    .child(nameController.text)
+                    .set({'name': nameController.text});
+                context.pop();
+              },
             ),
           ],
         ),
