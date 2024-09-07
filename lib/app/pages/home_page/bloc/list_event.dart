@@ -8,3 +8,8 @@ class AddList extends ListEvent {
   AddList({required this.name});
   final String name;
 }
+
+class RemoveList extends ListEvent {
+  RemoveList({required this.name});
+  final String name;
+}

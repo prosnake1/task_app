@@ -10,8 +10,13 @@ GoRouter router = GoRouter(
       builder: (context, state) => const HomePage(),
       routes: [
         GoRoute(
-          path: 'list',
-          builder: (context, state) => const ListPage(),
+          path: 'list/:title',
+          builder: (context, state) {
+            final title = state.extra as String;
+            return ListPage(
+              title: title,
+            );
+          },
           routes: [
             GoRoute(
               path: 'create-task',

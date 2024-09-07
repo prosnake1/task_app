@@ -12,6 +12,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   ListBloc() : super(ListInitial()) {
     on<LoadList>(_loadList);
     on<AddList>(_addList);
+    on<RemoveList>(_removeList);
   }
   final DatabaseReference databaseRef = FirebaseDatabase.instance
       .ref()
@@ -28,6 +29,18 @@ class ListBloc extends Bloc<ListEvent, ListState> {
             'name': name,
           },
         );
+      }
+      emit(LoadedList(filmsList: await listFetchData()));
+    } catch (e, st) {
+      emit(ListFailure(exception: e));
+      GetIt.I<Talker>().handle(e, st);
+    }
+  }
+
+  Future<void> _removeList(RemoveList event, Emitter<ListState> emit) async {
+    try {
+      if (FirebaseAuth.instance.currentUser != null) {
+        await databaseRef.child(event.name).remove();
       }
       emit(LoadedList(filmsList: await listFetchData()));
     } catch (e, st) {

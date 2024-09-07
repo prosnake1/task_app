@@ -4,7 +4,8 @@ import 'package:task_app/app/theme/box_decoration.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({super.key});
+  final String title;
+  const ListPage({super.key, required this.title});
 
   @override
   State<ListPage> createState() => _ListPageState();
@@ -15,7 +16,7 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Задача'),
+        title: Text(widget.title),
         actions: [
           IconButton(
             onPressed: () {

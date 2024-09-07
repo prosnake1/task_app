@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, i) {
                   final list = state.filmsList[i];
                   return InkWell(
-                    onTap: () => context.push('/list', extra: list.name),
+                    onTap: () => context.push('/list/:title', extra: list.name),
                     child: Container(
                       decoration: boxDecor,
                       height: 91,
@@ -72,10 +72,27 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Список',
-                              style: Theme.of(context).textTheme.labelMedium,
-                              textAlign: TextAlign.left,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Список',
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    _listBloc.add(RemoveList(name: list.name));
+                                  },
+                                  child: Text(
+                                    'Удалить',
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                )
+                              ],
                             ),
                             Text(list.name),
                           ],
