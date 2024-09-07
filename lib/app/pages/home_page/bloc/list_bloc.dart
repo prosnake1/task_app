@@ -11,12 +11,31 @@ part 'list_state.dart';
 class ListBloc extends Bloc<ListEvent, ListState> {
   ListBloc() : super(ListInitial()) {
     on<LoadList>(_loadList);
+    on<AddList>(_addList);
   }
   final DatabaseReference databaseRef = FirebaseDatabase.instance
       .ref()
       .child('users')
       .child(FirebaseAuth.instance.currentUser!.uid)
       .child('lists');
+  Future<void> _addList(AddList event, Emitter<ListState> emit) async {
+    try {
+      emit(ListLoading());
+      if (FirebaseAuth.instance.currentUser != null) {
+        String name = event.name;
+        await databaseRef.child(event.name).set(
+          {
+            'name': name,
+          },
+        );
+      }
+      emit(LoadedList(filmsList: await listFetchData()));
+    } catch (e, st) {
+      emit(ListFailure(exception: e));
+      GetIt.I<Talker>().handle(e, st);
+    }
+  }
+
   Future<void> _loadList(LoadList event, Emitter<ListState> emit) async {
     try {
       emit(ListLoading());

@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
+import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class CreateList extends StatefulWidget {
@@ -13,11 +14,13 @@ class CreateList extends StatefulWidget {
 }
 
 class _CreateListState extends State<CreateList> {
+  final _listBloc = GetIt.I.get<ListBloc>();
   var nameController = TextEditingController();
   late FocusNode _focusNode;
   @override
   void initState() {
     _focusNode = FocusNode();
+    _listBloc.add(LoadList());
     super.initState();
   }
 
@@ -46,19 +49,27 @@ class _CreateListState extends State<CreateList> {
               ),
             ),
             10.ph,
-            TaskTextButton(
-              text: 'Создать',
-              color: const Color.fromRGBO(38, 136, 235, 1),
-              onTap: () async {
-                final DatabaseReference listRef = FirebaseDatabase.instance
-                    .ref()
-                    .child('users')
-                    .child(FirebaseAuth.instance.currentUser!.uid)
-                    .child('lists');
-                await listRef
-                    .child(nameController.text)
-                    .set({'name': nameController.text});
-                context.pop();
+            BlocBuilder<ListBloc, ListState>(
+              bloc: _listBloc,
+              builder: (context, state) {
+                if (state is LoadedList) {
+                  return TaskTextButton(
+                    text: 'Создать',
+                    color: const Color.fromRGBO(38, 136, 235, 1),
+                    onTap: () async {
+                      _listBloc.add(AddList(name: nameController.text));
+                      context.pop();
+                    },
+                  );
+                }
+                if (state is ListLoading) {
+                  return TaskTextButton(
+                      text: 'Загрузка...',
+                      color: const Color.fromRGBO(38, 136, 235, 1),
+                      isActivated: false,
+                      onTap: () {});
+                }
+                return const SizedBox();
               },
             ),
           ],
