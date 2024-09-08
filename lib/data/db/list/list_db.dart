@@ -18,12 +18,10 @@ Future<List<ListTask>> listFetchData() async {
     if (snapshot.value != null) {
       Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
       values.forEach((key, value) {
-        GetIt.I<Talker>().debug(value['name']);
         ListTask listTask = ListTask(
-          name: value['name'].toString(),
+          name: value['name'],
         );
         listTaskList.add(listTask);
-        GetIt.I<Talker>().debug(listTaskList);
       });
     } else {
       GetIt.I<Talker>().debug('Data in Collection is Empty!');

@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, i) {
                   final list = state.filmsList[i];
                   return InkWell(
-                    onTap: () => context.push('/list/:title', extra: list.name),
+                    onTap: () => context.push('/:title', extra: list.name),
                     child: Container(
                       decoration: boxDecor,
                       height: 91,
