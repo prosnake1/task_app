@@ -18,13 +18,13 @@ Future<List<Task>> fetchTaskData(String name) async {
     DataSnapshot snapshot = event.snapshot;
     if (snapshot.value != null) {
       Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
+      GetIt.I.get<Talker>().debug(values);
       values.forEach((key, value) {
         Task film = Task(
-            name: value['kinopoiskId'],
-            date: value['filmName'],
+            name: value['name'],
+            date: value['date'],
             desc: value['desc'],
-            notification: value['notification'],
-            time: value['posterUrl']);
+            time: value['time']);
         tasksList.add(film);
       });
     } else {

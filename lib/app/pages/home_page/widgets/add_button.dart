@@ -10,7 +10,7 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        context.push('/create-list');
+        context.push('/home/create-list');
       },
       icon: const Icon(
         Icons.add,

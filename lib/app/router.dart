@@ -6,10 +6,11 @@ import 'package:task_app/app/pages/pages.dart';
 
 GoRouter router = GoRouter(
   observers: [TalkerRouteObserver(GetIt.I.get<Talker>())],
-  initialLocation: (FirebaseAuth.instance.currentUser == null) ? '/login' : '/',
+  initialLocation:
+      (FirebaseAuth.instance.currentUser == null) ? '/login' : '/home',
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
+      path: '/home',
       builder: (context, state) => const HomePage(),
       routes: [
         GoRoute(
@@ -24,12 +25,19 @@ GoRouter router = GoRouter(
               title: title,
             );
           },
+          routes: [
+            GoRoute(
+              path: 'create-task',
+              builder: (context, state) {
+                final name = state.extra as String;
+                return CreateTaskPage(
+                  listName: name,
+                );
+              },
+            ),
+          ],
         ),
       ],
-    ),
-    GoRoute(
-      path: '/list/create-task',
-      builder: (context, state) => const CreateTaskPage(),
     ),
     GoRoute(
       path: '/login',

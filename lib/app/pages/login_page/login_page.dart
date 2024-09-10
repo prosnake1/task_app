@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                                     'Вы вошли в аккаунт ${FirebaseAuth.instance.currentUser!.email}');
 
                             // ignore: use_build_context_synchronously
-                            context.go('/');
+                            context.go('/home');
                           }
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {

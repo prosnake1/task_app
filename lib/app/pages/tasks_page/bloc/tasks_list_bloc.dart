@@ -12,19 +12,55 @@ part 'tasks_list_state.dart';
 class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
   TasksListBloc() : super(TasksListInitial()) {
     on<LoadTasks>(_loadList);
+    on<AddTask>(_addTask);
+    on<RemoveTask>(_removeTask);
   }
   final DatabaseReference listRef = FirebaseDatabase.instance
       .ref()
       .child('users')
       .child(FirebaseAuth.instance.currentUser!.uid)
-      .child('lists')
-      .child('tasks');
+      .child('lists');
   Future<void> _loadList(LoadTasks event, Emitter<TasksListState> emit) async {
     try {
       emit(TasksListLoading());
       if (FirebaseAuth.instance.currentUser != null) {
         emit(LoadedTasksList(tasks: await fetchTaskData(event.name)));
       }
+    } catch (e, st) {
+      emit(TasksListFailure(error: e));
+      GetIt.I.get<Talker>().handle(e, st);
+    }
+  }
+
+  Future<void> _addTask(AddTask event, Emitter<TasksListState> emit) async {
+    try {
+      emit(TasksListLoading());
+      if (FirebaseAuth.instance.currentUser != null) {
+        await listRef.child(event.parent).child('tasks').child(event.name).set({
+          'name': event.name,
+          'desc': event.desc,
+          'date': event.day,
+          'time': event.time,
+        });
+      }
+      emit(LoadedTasksList(tasks: await fetchTaskData(event.name)));
+    } catch (e, st) {
+      emit(TasksListFailure(error: e));
+      GetIt.I.get<Talker>().handle(e, st);
+    }
+  }
+
+  Future<void> _removeTask(
+      RemoveTask event, Emitter<TasksListState> emit) async {
+    try {
+      if (FirebaseAuth.instance.currentUser != null) {
+        await listRef
+            .child(event.parent)
+            .child('tasks')
+            .child(event.name)
+            .remove();
+      }
+      emit(LoadedTasksList(tasks: await fetchTaskData(event.name)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/pages/tasks_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
-import 'package:task_app/app/widgets/widgets.dart';
 
 class ListPage extends StatefulWidget {
   final String title;
@@ -30,7 +30,7 @@ class _ListPageState extends State<ListPage> {
         actions: [
           IconButton(
             onPressed: () {
-              context.push('/list/create-task');
+              context.push('/home/:title/create-task', extra: widget.title);
             },
             icon: const Icon(
               Icons.add,
@@ -40,7 +40,7 @@ class _ListPageState extends State<ListPage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0),
+        padding: const EdgeInsets.only(left: 40.0, right: 40.0),
         child: BlocBuilder<TasksListBloc, TasksListState>(
           bloc: _tasksListBloc,
           builder: (context, state) {
@@ -55,17 +55,37 @@ class _ListPageState extends State<ListPage> {
                   return InkWell(
                     child: Container(
                       decoration: boxDecor,
-                      height: 150,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 16, right: 16, top: 1, bottom: 1),
+                          left: 16,
+                          right: 16,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Задача',
-                              style: Theme.of(context).textTheme.labelMedium,
-                              textAlign: TextAlign.left,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Задача',
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    _tasksListBloc.add(RemoveTask(
+                                        name: task.name,
+                                        parent: widget.title.toString()));
+                                  },
+                                  child: Text(
+                                    'Удалить',
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                )
+                              ],
                             ),
                             Text(task.name),
                             Text(
@@ -75,14 +95,14 @@ class _ListPageState extends State<ListPage> {
                             Row(
                               children: [
                                 Text(
-                                  'Напоминание в 00:00',
+                                  'Напоминание в ${'${task.date}  ${task.time}'}',
                                   style:
                                       Theme.of(context).textTheme.labelMedium,
                                   textAlign: TextAlign.left,
                                 ),
-                                const MySwitch()
                               ],
                             ),
+                            10.ph,
                           ],
                         ),
                       ),

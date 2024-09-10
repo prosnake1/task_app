@@ -9,10 +9,10 @@ GetIt locator = GetIt.I;
 final talker = TalkerFlutter.init();
 void setup() {
   setupTalker();
-  GetIt.I.registerLazySingleton<ListBloc>(
+  locator.registerLazySingleton<ListBloc>(
     () => ListBloc(),
   );
-  GetIt.I.registerLazySingleton<TasksListBloc>(
+  locator.registerLazySingleton<TasksListBloc>(
     () => TasksListBloc(),
   );
 }
