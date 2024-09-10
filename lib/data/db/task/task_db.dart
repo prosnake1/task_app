@@ -20,11 +20,8 @@ Future<List<Task>> fetchTaskData(String name) async {
       Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
       GetIt.I.get<Talker>().debug(values);
       values.forEach((key, value) {
-        Task film = Task(
-            name: value['name'],
-            date: value['date'],
-            desc: value['desc'],
-            time: value['time']);
+        Task film =
+            Task(name: value['name'], desc: value['desc'], time: value['time']);
         tasksList.add(film);
       });
     } else {

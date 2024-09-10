@@ -39,11 +39,10 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
         await listRef.child(event.parent).child('tasks').child(event.name).set({
           'name': event.name,
           'desc': event.desc,
-          'date': event.day,
           'time': event.time,
         });
+        emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
       }
-      emit(LoadedTasksList(tasks: await fetchTaskData(event.name)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);
@@ -59,8 +58,8 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
             .child('tasks')
             .child(event.name)
             .remove();
+        emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
       }
-      emit(LoadedTasksList(tasks: await fetchTaskData(event.name)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);

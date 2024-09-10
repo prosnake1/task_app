@@ -12,13 +12,11 @@ class AddTask extends TasksListEvent {
     required this.parent,
     required this.name,
     required this.desc,
-    this.day,
     this.time,
   });
   final String parent;
   final String name;
   final String desc;
-  final String? day;
   final String? time;
 }
 

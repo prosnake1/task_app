@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/pages/tasks_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/widgets/widgets.dart';
@@ -17,16 +18,15 @@ class CreateTaskPage extends StatefulWidget {
 class _CreateTaskPageState extends State<CreateTaskPage> {
   final _tasksBloc = GetIt.I.get<TasksListBloc>();
   DateTime time = DateTime.now();
-  TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  bool switchValue = true;
+  bool switchValue = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Создать задачу - ${widget.listName}'),
+        title: Text('Создать задачу в списке ${widget.listName}'),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 12.0, right: 12.0),
@@ -48,10 +48,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     const Text('Описание', style: TextStyle(fontSize: 18)),
                     10.ph,
                     SizedBox(
-                        height: 40,
-                        child: TextField(
-                          controller: descController,
-                        )),
+                      height: 40,
+                      child: TextField(
+                        controller: descController,
+                      ),
+                    ),
                     10.ph,
                     Row(
                       children: [
@@ -71,74 +72,33 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       ],
                     ),
                     2.ph,
-                    const Text('День', style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      height: 40,
-                      child: TextFormField(
-                        controller: dateController,
-                        decoration: const InputDecoration(
-                          hintText: '_ _._ _._ _ _ _',
-                          suffixIcon: Icon(Icons.calendar_month),
-                        ),
-                        readOnly: true,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(2100));
-
-                          if (pickedDate != null) {
-                            var formatedDate =
-                                "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-                            setState(() {
-                              dateController.text = formatedDate;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: TextFormField(
-                        controller: timeController,
-                        decoration: const InputDecoration(
-                          hintText: '_ _._ _._ _ _ _',
-                          suffixIcon: Icon(Icons.access_time),
-                        ),
-                        readOnly: true,
-                        onTap: () async {
-                          DatePicker.showDateTimePicker(
-                            context,
-                            showTitleActions: true,
-                            onChanged: (date) => null,
-                            onConfirm: (date) {},
-                          );
-                        },
-                      ),
-                    ),
-                    20.ph,
-                    const Text('Время', style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      height: 40,
-                      child: TextFormField(
-                        controller: timeController,
-                        decoration: const InputDecoration(
-                          hintText: '_ _._ _._ _ _ _',
-                          suffixIcon: Icon(Icons.access_time),
-                        ),
-                        readOnly: true,
-                        onTap: () async {
-                          TimeOfDay? pickedTime = await showTimePicker(
-                              context: context, initialTime: TimeOfDay.now());
-                          if (pickedTime != null) {
-                            var formatedTime =
-                                "${pickedTime.hour}-${pickedTime.minute}";
-                            setState(() {
-                              timeController.text = formatedTime;
-                            });
-                          }
-                        },
+                    Visibility(
+                      visible: switchValue,
+                      child: Column(
+                        children: [
+                          const Text('Время', style: TextStyle(fontSize: 18)),
+                          SizedBox(
+                            height: 40,
+                            child: TextFormField(
+                              controller: timeController,
+                              decoration: const InputDecoration(
+                                hintText: '_ _._ _._ _ _ _',
+                                suffixIcon: Icon(Icons.access_time),
+                              ),
+                              readOnly: true,
+                              onTap: () async {
+                                DatePicker.showDateTimePicker(
+                                  context,
+                                  showTitleActions: true,
+                                  onChanged: (date) => null,
+                                  onConfirm: (date) {
+                                    timeController.text = date.toString();
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -155,12 +115,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     onTap: () {
                       _tasksBloc.add(
                         AddTask(
-                            parent: widget.listName,
-                            name: nameController.text.toString(),
-                            desc: descController.text.toString(),
-                            day: dateController.text.toString(),
-                            time: timeController.text.toString()),
+                          parent: widget.listName,
+                          name: nameController.text.toString(),
+                          desc: descController.text.toString(),
+                          time: timeController.text.toString(),
+                        ),
                       );
+                      context.pop();
                     },
                   );
                 }

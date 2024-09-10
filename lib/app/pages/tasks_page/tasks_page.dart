@@ -94,12 +94,15 @@ class _ListPageState extends State<ListPage> {
                             ),
                             Row(
                               children: [
-                                Text(
-                                  'Напоминание в ${'${task.date}  ${task.time}'}',
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
-                                  textAlign: TextAlign.left,
-                                ),
+                                (task.time.isEmpty)
+                                    ? const SizedBox()
+                                    : Text(
+                                        'Напоминание в ${task.time}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                        textAlign: TextAlign.left,
+                                      ),
                               ],
                             ),
                             10.ph,
