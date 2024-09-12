@@ -6,9 +6,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static Future<void> onDidReceiveNotification(
-      NotificationResponse notificationResponse) async {
-    print("Notification receive");
-  }
+      NotificationResponse notificationResponse) async {}
 
   static Future<void> init() async {
     const AndroidInitializationSettings androidInitializationSettings =

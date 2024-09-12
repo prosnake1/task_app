@@ -117,11 +117,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     onTap: () async {
                       NotificationService.scheduleNotification(
                           1, 'Task', "Test", scheduleTime);
-                      await NotificationService.scheduleNotification(
-                          0,
-                          'Мои Задачи',
-                          'Новое задание!',
-                          DateTime.now().add(Duration(seconds: 5)));
                       _tasksBloc.add(
                         AddTask(
                           parent: widget.listName,
