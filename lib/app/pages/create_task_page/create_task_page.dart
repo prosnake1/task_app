@@ -4,6 +4,7 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
+import 'package:task_app/app/notification/notification.dart';
 import 'package:task_app/app/pages/tasks_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
@@ -17,7 +18,7 @@ class CreateTaskPage extends StatefulWidget {
 
 class _CreateTaskPageState extends State<CreateTaskPage> {
   final _tasksBloc = GetIt.I.get<TasksListBloc>();
-  DateTime time = DateTime.now();
+  DateTime scheduleTime = DateTime.now();
   TextEditingController timeController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -57,7 +58,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     Row(
                       children: [
                         const Text(
-                          'Включить напоминание',
+                          'Напоминание',
                           style: TextStyle(fontSize: 18),
                         ),
                         Switch(
@@ -76,7 +77,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       visible: switchValue,
                       child: Column(
                         children: [
-                          const Text('Время', style: TextStyle(fontSize: 18)),
+                          const Text('Установить время',
+                              style: TextStyle(fontSize: 18)),
                           SizedBox(
                             height: 40,
                             child: TextFormField(
@@ -90,7 +92,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 DatePicker.showDateTimePicker(
                                   context,
                                   showTitleActions: true,
-                                  onChanged: (date) => null,
+                                  onChanged: (date) => scheduleTime = date,
                                   onConfirm: (date) {
                                     timeController.text = date.toString();
                                   },
@@ -112,7 +114,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   return TaskTextButton(
                     text: 'Создать',
                     color: const Color.fromRGBO(38, 136, 235, 1),
-                    onTap: () {
+                    onTap: () async {
+                      NotificationService.scheduleNotification(
+                          1, 'Task', "Test", scheduleTime);
+                      await NotificationService.scheduleNotification(
+                          0,
+                          'Мои Задачи',
+                          'Новое задание!',
+                          DateTime.now().add(Duration(seconds: 5)));
                       _tasksBloc.add(
                         AddTask(
                           parent: widget.listName,
