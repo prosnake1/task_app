@@ -15,7 +15,7 @@ class CreateList extends StatefulWidget {
 
 class _CreateListState extends State<CreateList> {
   final _listBloc = GetIt.I.get<ListBloc>();
-  var nameController = TextEditingController();
+  final nameController = TextEditingController();
   late FocusNode _focusNode;
   @override
   void initState() {

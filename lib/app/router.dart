@@ -35,6 +35,16 @@ GoRouter router = GoRouter(
                 );
               },
             ),
+            GoRoute(
+              path: 'task/:name',
+              name: 'task',
+              builder: (context, state) {
+                return TaskPage(
+                  name: state.pathParameters['name'].toString(),
+                  desc: state.uri.queryParameters['desc'].toString(),
+                );
+              },
+            )
           ],
         ),
       ],

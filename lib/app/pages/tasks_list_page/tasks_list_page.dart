@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
-import 'package:task_app/app/pages/tasks_page/bloc/tasks_list_bloc.dart';
+import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
 
 class ListPage extends StatefulWidget {
   final String title;
+
   const ListPage({super.key, required this.title});
 
   @override
@@ -16,6 +17,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   final _tasksListBloc = GetIt.I.get<TasksListBloc>();
+  bool switched = false;
   @override
   void initState() {
     _tasksListBloc.add(LoadTasks(name: widget.title));
@@ -52,7 +54,23 @@ class _ListPageState extends State<ListPage> {
                 ),
                 itemBuilder: (context, i) {
                   final task = state.tasks[i];
+                  if (task.time.isNotEmpty) {
+                    switched = true;
+                  } else {
+                    switched = false;
+                  }
                   return InkWell(
+                    onTap: () {
+                      context.goNamed('task',
+                          extra: widget.title,
+                          pathParameters: {
+                            'title': widget.title,
+                            'name': task.name,
+                          },
+                          queryParameters: {
+                            'desc': task.desc,
+                          });
+                    },
                     child: Container(
                       decoration: boxDecor,
                       child: Padding(
@@ -75,9 +93,12 @@ class _ListPageState extends State<ListPage> {
                                 ),
                                 TextButton(
                                   onPressed: () async {
-                                    _tasksListBloc.add(RemoveTask(
+                                    _tasksListBloc.add(
+                                      RemoveTask(
                                         name: task.name,
-                                        parent: widget.title.toString()));
+                                        parent: widget.title.toString(),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                     'Удалить',
@@ -94,15 +115,27 @@ class _ListPageState extends State<ListPage> {
                             ),
                             Row(
                               children: [
-                                (task.time.isEmpty)
-                                    ? const SizedBox()
-                                    : Text(
-                                        'Напоминание в ${task.time}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium,
-                                        textAlign: TextAlign.left,
-                                      ),
+                                (task.time.isNotEmpty)
+                                    ? Column(
+                                        children: [
+                                          (DateTime.parse(task.time).isAfter(
+                                                      DateTime.now()) ==
+                                                  true)
+                                              ? Text(
+                                                  'Напоминание в ${task.time.substring(5, 16)}',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelMedium,
+                                                  textAlign: TextAlign.left,
+                                                )
+                                              : Text('Напоминание прошло',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelMedium,
+                                                  textAlign: TextAlign.left),
+                                        ],
+                                      )
+                                    : const SizedBox(),
                               ],
                             ),
                             10.ph,

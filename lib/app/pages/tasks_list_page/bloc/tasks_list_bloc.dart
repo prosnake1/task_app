@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:task_app/app/notification/notification.dart';
 import 'package:task_app/data/db/task/task_db.dart';
 import 'package:task_app/domain/task/model.dart';
 
@@ -41,6 +42,15 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
           'desc': event.desc,
           'time': event.time,
         });
+        if (event.time!.isNotEmpty) {
+          int id = event.name.hashCode;
+          NotificationService.scheduleNotification(
+            id,
+            event.name,
+            event.desc,
+            DateTime.parse(event.time.toString()),
+          );
+        }
         emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
       }
     } catch (e, st) {
@@ -52,6 +62,9 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
   Future<void> _removeTask(
       RemoveTask event, Emitter<TasksListState> emit) async {
     try {
+      NotificationService.flutterLocalNotificationsPlugin.cancel(
+        event.name.hashCode,
+      );
       if (FirebaseAuth.instance.currentUser != null) {
         await listRef
             .child(event.parent)

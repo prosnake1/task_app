@@ -4,8 +4,7 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
-import 'package:task_app/app/notification/notification.dart';
-import 'package:task_app/app/pages/tasks_page/bloc/tasks_list_bloc.dart';
+import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class CreateTaskPage extends StatefulWidget {
@@ -115,8 +114,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     text: 'Создать',
                     color: const Color.fromRGBO(38, 136, 235, 1),
                     onTap: () async {
-                      NotificationService.scheduleNotification(
-                          1, 'Task', "Test", scheduleTime);
                       _tasksBloc.add(
                         AddTask(
                           parent: widget.listName,

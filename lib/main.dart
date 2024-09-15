@@ -13,9 +13,9 @@ void main() async {
     () async {
       setup();
       WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp();
       tz.initializeTimeZones();
       NotificationService.init();
-      await Firebase.initializeApp();
       FlutterError.onError = (details) =>
           GetIt.I<Talker>().handle(details.exception, details.stack);
       runApp(const MyApp());
