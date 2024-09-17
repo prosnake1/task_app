@@ -1,10 +1,13 @@
 part of 'tasks_list_bloc.dart';
 
-abstract class TasksListEvent {}
+abstract class TasksListEvent extends Equatable {}
 
 class LoadTasks extends TasksListEvent {
   LoadTasks({required this.name});
   final String name;
+
+  @override
+  List<Object?> get props => [name];
 }
 
 class AddTask extends TasksListEvent {
@@ -18,10 +21,16 @@ class AddTask extends TasksListEvent {
   final String name;
   final String desc;
   final String? time;
+
+  @override
+  List<Object?> get props => [parent, name, desc, time];
 }
 
 class RemoveTask extends TasksListEvent {
   RemoveTask({required this.name, required this.parent});
   final String name;
   final String parent;
+
+  @override
+  List<Object?> get props => [name, parent];
 }

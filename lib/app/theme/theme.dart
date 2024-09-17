@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/app/theme/colors.dart';
 
 final lightTheme = ThemeData(
   fontFamily: 'VKSansDisplay',
-  scaffoldBackgroundColor: const Color.fromRGBO(235, 237, 240, 1),
+  scaffoldBackgroundColor: ThemeColors.background,
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(
-      color: Color.fromRGBO(38, 136, 235, 1),
+      color: ThemeColors.primary,
     ),
-    backgroundColor: Color.fromRGBO(235, 237, 240, 1),
+    backgroundColor: ThemeColors.background,
     titleTextStyle: TextStyle(
       fontWeight: FontWeight.w600,
       fontFamily: "VKSansDisplay",
@@ -17,6 +18,8 @@ final lightTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
+      backgroundColor: ThemeColors.primary,
+      disabledBackgroundColor: ThemeColors.primary.withOpacity(0.4),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -32,7 +35,7 @@ final lightTheme = ThemeData(
       borderRadius: BorderRadius.circular(10),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Color.fromRGBO(38, 136, 235, 1)),
+      borderSide: const BorderSide(color: ThemeColors.primary),
       borderRadius: BorderRadius.circular(10),
     ),
     contentPadding: const EdgeInsets.only(left: 15),

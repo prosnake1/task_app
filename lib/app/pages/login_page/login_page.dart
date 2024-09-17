@@ -1,9 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
+import 'package:task_app/app/pages/login_page/bloc/login_bloc.dart';
+import 'package:task_app/app/theme/colors.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,6 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _loginBloc = GetIt.I.get<LoginBloc>();
   late FocusNode _focusNode;
   var emailController = TextEditingController();
   var passController = TextEditingController();
@@ -54,59 +59,45 @@ class _LoginPageState extends State<LoginPage> {
                       controller: passController,
                     ),
                     20.ph,
-                    TaskTextButton(
-                      text: 'Войти',
-                      color: const Color.fromRGBO(38, 136, 235, 1),
-                      onTap: () async {
-                        var email = emailController.text.trim();
-                        var password = passController.text.trim();
-                        if (email.isEmpty) {
-                          Fluttertoast.showToast(msg: 'Введите почту');
-                          Vibrate.vibrate();
-                          return;
+                    BlocListener<LoginBloc, LoginState>(
+                      bloc: _loginBloc,
+                      listener: (context, state) {
+                        if (state is SuccessLogin) {
+                          GetIt.I.get<Talker>().debug('Logged');
+                          context.go('/home');
                         }
-                        if (password.isEmpty) {
-                          Fluttertoast.showToast(msg: 'Введите пароль');
-                          Vibrate.vibrate();
-                          return;
-                        }
-                        try {
-                          FirebaseAuth auth = FirebaseAuth.instance;
-
-                          UserCredential userCredential =
-                              await auth.signInWithEmailAndPassword(
-                                  email: email, password: password);
-                          if (userCredential.user != null) {
-                            Fluttertoast.showToast(
-                                msg:
-                                    'Вы вошли в аккаунт ${FirebaseAuth.instance.currentUser!.email}');
-
-                            // ignore: use_build_context_synchronously
-                            context.go('/home');
-                          }
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            Fluttertoast.showToast(
-                                msg: 'пользователь не найден');
-                          } else if (e.code == 'wrong-password') {
-                            Fluttertoast.showToast(msg: 'неверный пароль');
-                          } else {
-                            Fluttertoast.showToast(
-                                msg:
-                                    'Неизвестная почта или неправильный пароль');
-                          }
-                        } catch (e) {
-                          Fluttertoast.showToast(
-                              msg: 'Проверьте интернет соединение');
+                        if (state is FailedLogin) {
+                          GetIt.I.get<Talker>().debug('Failed Login');
                         }
                       },
+                      child: TaskTextButton(
+                        text: 'Войти',
+                        color: ThemeColors.primary,
+                        onTap: () async {
+                          var email = emailController.text.trim();
+                          var password = passController.text.trim();
+                          if (email.isEmpty) {
+                            Fluttertoast.showToast(msg: 'Введите почту');
+                            Vibrate.vibrate();
+                            return;
+                          }
+                          if (password.isEmpty) {
+                            Fluttertoast.showToast(msg: 'Введите пароль');
+                            Vibrate.vibrate();
+                            return;
+                          }
+                          _loginBloc.add(
+                            LogIn(email: email, password: password),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
               ),
               TaskTextButton(
                 text: 'Зарегистрироваться',
-                color: const Color.fromRGBO(75, 179, 75, 1),
+                color: ThemeColors.green,
                 onTap: () => context.push('/login/sign-up'),
               ),
               10.ph,

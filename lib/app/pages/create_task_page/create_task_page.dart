@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
+import 'package:task_app/app/theme/colors.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class CreateTaskPage extends StatefulWidget {
@@ -61,7 +62,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                           style: TextStyle(fontSize: 18),
                         ),
                         Switch(
-                          activeColor: const Color.fromRGBO(38, 136, 235, 1),
+                          activeColor: ThemeColors.primary,
                           value: switchValue,
                           onChanged: (value) {
                             setState(() {
@@ -112,7 +113,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 if (state is LoadedTasksList) {
                   return TaskTextButton(
                     text: 'Создать',
-                    color: const Color.fromRGBO(38, 136, 235, 1),
                     onTap: () async {
                       _tasksBloc.add(
                         AddTask(

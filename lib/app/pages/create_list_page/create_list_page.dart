@@ -55,7 +55,6 @@ class _CreateListState extends State<CreateList> {
                 if (state is LoadedList) {
                   return TaskTextButton(
                     text: 'Создать',
-                    color: const Color.fromRGBO(38, 136, 235, 1),
                     onTap: () async {
                       _listBloc.add(AddList(name: nameController.text));
                       context.pop();
@@ -64,10 +63,10 @@ class _CreateListState extends State<CreateList> {
                 }
                 if (state is ListLoading) {
                   return TaskTextButton(
-                      text: 'Загрузка...',
-                      color: const Color.fromRGBO(38, 136, 235, 1),
-                      isActivated: false,
-                      onTap: () {});
+                    text: 'Загрузка...',
+                    isActivated: false,
+                    onTap: () {},
+                  );
                 }
                 return const SizedBox();
               },

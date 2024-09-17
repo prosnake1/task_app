@@ -82,15 +82,11 @@ class _HomePageState extends State<HomePage> {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
-                                TextButton(
+                                IconButton(
                                   onPressed: () async {
                                     _listBloc.add(RemoveList(name: list.name));
                                   },
-                                  child: Text(
-                                    'Удалить',
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
+                                  icon: const Icon(Icons.delete),
                                 )
                               ],
                             ),

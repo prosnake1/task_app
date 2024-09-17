@@ -1,26 +1,22 @@
+import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:task_app/app/notification/notification.dart';
-import 'package:task_app/data/db/task/task_db.dart';
+import 'package:task_app/data/db/task/requests.dart';
+import 'package:task_app/domain/task/task_db.dart';
 import 'package:task_app/domain/task/model.dart';
 
 part 'tasks_list_event.dart';
 part 'tasks_list_state.dart';
 
 class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
-  TasksListBloc() : super(TasksListInitial()) {
+  TasksListBloc(this._repository) : super(TasksListInitial()) {
     on<LoadTasks>(_loadList);
     on<AddTask>(_addTask);
     on<RemoveTask>(_removeTask);
   }
-  final DatabaseReference listRef = FirebaseDatabase.instance
-      .ref()
-      .child('users')
-      .child(FirebaseAuth.instance.currentUser!.uid)
-      .child('lists');
+  final TaskRepository _repository;
   Future<void> _loadList(LoadTasks event, Emitter<TasksListState> emit) async {
     try {
       emit(TasksListLoading());
@@ -36,23 +32,8 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
   Future<void> _addTask(AddTask event, Emitter<TasksListState> emit) async {
     try {
       emit(TasksListLoading());
-      if (FirebaseAuth.instance.currentUser != null) {
-        await listRef.child(event.parent).child('tasks').child(event.name).set({
-          'name': event.name,
-          'desc': event.desc,
-          'time': event.time,
-        });
-        if (event.time!.isNotEmpty) {
-          int id = event.name.hashCode;
-          NotificationService.scheduleNotification(
-            id,
-            event.name,
-            event.desc,
-            DateTime.parse(event.time.toString()),
-          );
-        }
-        emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
-      }
+      _repository.add(event.name, event.desc, event.time, event.parent);
+      emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);
@@ -62,17 +43,8 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
   Future<void> _removeTask(
       RemoveTask event, Emitter<TasksListState> emit) async {
     try {
-      NotificationService.flutterLocalNotificationsPlugin.cancel(
-        event.name.hashCode,
-      );
-      if (FirebaseAuth.instance.currentUser != null) {
-        await listRef
-            .child(event.parent)
-            .child('tasks')
-            .child(event.name)
-            .remove();
-        emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
-      }
+      _repository.remove(event.name, event.parent);
+      emit(LoadedTasksList(tasks: await fetchTaskData(event.parent)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);

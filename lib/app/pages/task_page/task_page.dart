@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/app/theme/colors.dart';
 
 class TaskPage extends StatefulWidget {
   final String name;
@@ -21,12 +22,12 @@ class _TaskPageState extends State<TaskPage> {
           children: [
             Container(
               height: 200,
-              color: Color.fromRGBO(38, 136, 235, 1),
+              color: ThemeColors.primary,
               width: MediaQuery.sizeOf(context).width,
               child: Center(
                   child: Text(
                 widget.name,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               )),
             ),
             Expanded(

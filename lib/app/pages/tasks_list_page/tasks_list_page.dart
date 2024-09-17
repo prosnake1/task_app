@@ -61,15 +61,17 @@ class _ListPageState extends State<ListPage> {
                   }
                   return InkWell(
                     onTap: () {
-                      context.goNamed('task',
-                          extra: widget.title,
-                          pathParameters: {
-                            'title': widget.title,
-                            'name': task.name,
-                          },
-                          queryParameters: {
-                            'desc': task.desc,
-                          });
+                      context.goNamed(
+                        'task',
+                        extra: widget.title,
+                        pathParameters: {
+                          'title': widget.title,
+                          'name': task.name,
+                        },
+                        queryParameters: {
+                          'desc': task.desc,
+                        },
+                      );
                     },
                     child: Container(
                       decoration: boxDecor,
@@ -91,7 +93,7 @@ class _ListPageState extends State<ListPage> {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
-                                TextButton(
+                                IconButton(
                                   onPressed: () async {
                                     _tasksListBloc.add(
                                       RemoveTask(
@@ -100,15 +102,13 @@ class _ListPageState extends State<ListPage> {
                                       ),
                                     );
                                   },
-                                  child: Text(
-                                    'Удалить',
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
+                                  icon: const Icon(Icons.delete),
                                 )
                               ],
                             ),
-                            Text(task.name),
+                            Text(
+                              task.name,
+                            ),
                             Text(
                               task.desc,
                               style: Theme.of(context).textTheme.labelLarge,
@@ -128,11 +128,13 @@ class _ListPageState extends State<ListPage> {
                                                       .labelMedium,
                                                   textAlign: TextAlign.left,
                                                 )
-                                              : Text('Напоминание прошло',
+                                              : Text(
+                                                  'Напоминание прошло',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .labelMedium,
-                                                  textAlign: TextAlign.left),
+                                                  textAlign: TextAlign.left,
+                                                ),
                                         ],
                                       )
                                     : const SizedBox(),

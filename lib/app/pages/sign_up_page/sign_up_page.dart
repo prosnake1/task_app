@@ -1,9 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
+import 'package:task_app/app/pages/sign_up_page/bloc/sign_up_bloc.dart';
+import 'package:task_app/app/theme/colors.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,6 +16,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _signUpBloc = GetIt.I.get<SignUpBloc>();
   late FocusNode _focusNode;
   var emailController = TextEditingController();
   var passController = TextEditingController();
@@ -64,62 +67,38 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ),
-              TaskTextButton(
-                text: 'Создать аккаунт',
-                color: const Color.fromRGBO(38, 136, 235, 1),
-                onTap: () async {
-                  var email = emailController.text.trim();
-                  var password = passController.text.trim();
-                  if (email.isEmpty || password.length < 7) {
-                    return;
-                  }
-                  if (email.isEmpty || password.isEmpty) {
-                    Fluttertoast.showToast(
-                        msg: 'Пожалуйста, заполните все поля');
-                    return;
-                  }
+              BlocBuilder<SignUpBloc, SignUpState>(
+                bloc: _signUpBloc,
+                builder: (context, state) {
+                  return TaskTextButton(
+                    text: 'Создать аккаунт',
+                    color: ThemeColors.green,
+                    onTap: () async {
+                      var email = emailController.text.trim();
+                      var password = passController.text.trim();
+                      if (email.isEmpty || password.length < 7) {
+                        Fluttertoast.showToast(
+                            msg: 'Пожалуйста, заполните все поля');
+                        return;
+                      }
+                      if (email.isEmpty || password.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: 'Пожалуйста, заполните все поля');
+                        return;
+                      }
 
-                  if (password.length < 6) {
-                    Fluttertoast.showToast(
-                        msg: 'Слабый пароль. Нужно больше 6 символов');
+                      if (password.length < 6) {
+                        Fluttertoast.showToast(
+                            msg: 'Слабый пароль. Нужно больше 6 символов');
+                        return;
+                      }
 
-                    return;
-                  }
-
-                  try {
-                    FirebaseAuth auth = FirebaseAuth.instance;
-
-                    UserCredential userCredential =
-                        await auth.createUserWithEmailAndPassword(
-                            email: email, password: password);
-
-                    if (userCredential.user != null) {
-                      DatabaseReference userRef =
-                          FirebaseDatabase.instance.ref().child('users');
-
-                      String uid = userCredential.user!.uid;
-
-                      await userRef.child(uid).set({
-                        'email': email,
-                        'uid': uid,
-                      });
-
-                      Fluttertoast.showToast(msg: 'Успешно');
-
-                      // ignore: use_build_context_synchronously
-                      context.go('/');
-                    } else {
-                      Fluttertoast.showToast(msg: 'Ошибка');
-                    }
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'weak-password') {
-                      Fluttertoast.showToast(msg: 'Слишком слабый пароль!');
-                    } else if (e.code == 'email-already-in-use') {
-                      Fluttertoast.showToast(msg: 'Аккаунт уже существует');
-                    }
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: 'Что-то произошло не так');
-                  }
+                      _signUpBloc.add(
+                        AddUser(email: email, password: password),
+                      );
+                      context.go('/home');
+                    },
+                  );
                 },
               ),
               10.ph,

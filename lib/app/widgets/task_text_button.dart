@@ -4,11 +4,11 @@ class TaskTextButton extends StatelessWidget {
   const TaskTextButton(
       {super.key,
       required this.text,
-      required this.color,
+      this.color,
       required this.onTap,
       this.isActivated});
   final String text;
-  final Color color;
+  final Color? color;
   final Function() onTap;
   final bool? isActivated;
   @override
@@ -19,7 +19,7 @@ class TaskTextButton extends StatelessWidget {
         onPressed: (isActivated == null || isActivated != false) ? onTap : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          disabledBackgroundColor: color.withOpacity(0.4),
+          disabledBackgroundColor: color?.withOpacity(0.4),
         ),
         child: SizedBox(
           width: 340,
