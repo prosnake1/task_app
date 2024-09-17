@@ -25,14 +25,15 @@ class _TaskPageState extends State<TaskPage> {
               color: ThemeColors.primary,
               width: MediaQuery.sizeOf(context).width,
               child: Center(
-                  child: Text(
-                widget.name,
-                style: const TextStyle(color: Colors.white),
-              )),
+                child: Text(
+                  widget.name,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
             ),
             Expanded(
               child: Container(
-                color: const Color.fromRGBO(235, 237, 240, 1),
+                color: ThemeColors.background,
                 child: Column(
                   children: [
                     const Text('Описание'),
