@@ -13,6 +13,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     var password = event.password;
     var email = event.email;
     try {
+      emit(SignUpInitial());
       FirebaseAuth auth = FirebaseAuth.instance;
 
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
@@ -28,11 +29,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           'email': email,
           'uid': uid,
         });
+        emit(SuccessSignUp());
         Fluttertoast.showToast(msg: 'Успешно');
       } else {
+        emit(FailedSignUp());
         Fluttertoast.showToast(msg: 'Ошибка');
       }
     } on FirebaseAuthException catch (e) {
+      emit(FailedSignUp());
       if (e.code == 'weak-password') {
         Fluttertoast.showToast(msg: 'Слишком слабый пароль!');
       } else if (e.code == 'email-already-in-use') {

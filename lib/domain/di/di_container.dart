@@ -7,6 +7,7 @@ import 'package:task_app/app/pages/login_page/bloc/login_bloc.dart';
 import 'package:task_app/app/pages/sign_up_page/bloc/sign_up_bloc.dart';
 import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/data/db/task/requests.dart';
+import 'package:task_app/domain/list/list_db.dart';
 
 GetIt locator = GetIt.I;
 final talker = TalkerFlutter.init();
@@ -16,7 +17,7 @@ void setup() {
     () => LoginBloc(),
   );
   locator.registerLazySingleton<ListBloc>(
-    () => ListBloc(),
+    () => ListBloc(ListDataRepository()),
   );
   locator.registerLazySingleton<SignUpBloc>(
     () => SignUpBloc(),

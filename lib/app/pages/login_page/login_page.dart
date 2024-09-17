@@ -63,11 +63,11 @@ class _LoginPageState extends State<LoginPage> {
                       bloc: _loginBloc,
                       listener: (context, state) {
                         if (state is SuccessLogin) {
-                          GetIt.I.get<Talker>().debug('Logged');
+                          GetIt.I.get<Talker>().debug('Вход выполнен');
                           context.go('/home');
                         }
                         if (state is FailedLogin) {
-                          GetIt.I.get<Talker>().debug('Failed Login');
+                          GetIt.I.get<Talker>().error('Вход не завершена');
                         }
                       },
                       child: TaskTextButton(

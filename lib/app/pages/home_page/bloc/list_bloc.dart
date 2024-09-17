@@ -10,16 +10,17 @@ part 'list_event.dart';
 part 'list_state.dart';
 
 class ListBloc extends Bloc<ListEvent, ListState> {
-  ListBloc() : super(ListInitial()) {
+  ListBloc(this._repository) : super(ListInitial()) {
     on<LoadList>(_loadList);
     on<AddList>(_addList);
     on<RemoveList>(_removeList);
   }
+  final ListDataRepository _repository;
   Future<void> _loadList(LoadList event, Emitter<ListState> emit) async {
     try {
       emit(ListLoading());
       if (FirebaseAuth.instance.currentUser != null) {
-        emit(LoadedList(filmsList: await listFetchData()));
+        emit(LoadedList(filmsList: await _repository.listFetchData()));
       }
     } catch (e, st) {
       emit(ListFailure(exception: e));
@@ -31,7 +32,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       emit(ListLoading());
       ListRepository().add(event.name);
-      emit(LoadedList(filmsList: await listFetchData()));
+      emit(LoadedList(filmsList: await _repository.listFetchData()));
     } catch (e, st) {
       emit(ListFailure(exception: e));
       GetIt.I<Talker>().handle(e, st);
@@ -41,7 +42,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   Future<void> _removeList(RemoveList event, Emitter<ListState> emit) async {
     try {
       ListRepository().remove(event.name);
-      emit(LoadedList(filmsList: await listFetchData()));
+      emit(LoadedList(filmsList: await _repository.listFetchData()));
     } catch (e, st) {
       emit(ListFailure(exception: e));
       GetIt.I<Talker>().handle(e, st);
