@@ -25,6 +25,7 @@ class TaskRepository {
           name,
           desc,
           DateTime.parse(time.toString()),
+          '{"name" : "$name","desc" : "$desc","parent" : "$parent" }',
         );
       }
     }

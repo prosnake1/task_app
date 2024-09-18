@@ -77,8 +77,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       visible: switchValue,
                       child: Column(
                         children: [
-                          const Text('Установить время',
-                              style: TextStyle(fontSize: 18)),
+                          const Text(
+                            'Установить время',
+                            style: TextStyle(fontSize: 18),
+                          ),
                           SizedBox(
                             height: 40,
                             child: TextFormField(

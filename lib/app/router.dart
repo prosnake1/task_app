@@ -50,6 +50,16 @@ GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
+      path: '/task',
+      name: 'noti_task',
+      builder: (context, state) {
+        return TaskPage(
+          name: state.pathParameters['name'].toString(),
+          desc: state.uri.queryParameters['desc'].toString(),
+        );
+      },
+    ),
+    GoRoute(
       path: '/login',
       builder: (context, state) => const LoginPage(),
       routes: [

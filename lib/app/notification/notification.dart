@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import 'package:task_app/app/router.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
@@ -6,7 +11,25 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static Future<void> onDidReceiveNotification(
-      NotificationResponse notificationResponse) async {}
+      NotificationResponse notificationResponse) async {
+    if (notificationResponse.payload != null) {
+      GetIt.I.get<Talker>().debug(
+            'notification payload: ${notificationResponse.payload}',
+          );
+      Map values = jsonDecode(notificationResponse.payload as String);
+      router.goNamed(
+        'task',
+        extra: values['parent'],
+        pathParameters: {
+          'title': values['parent'],
+          'name': values['name'],
+        },
+        queryParameters: {
+          'desc': values['desc'],
+        },
+      );
+    }
+  }
 
   static Future<void> init() async {
     const AndroidInitializationSettings androidInitializationSettings =
@@ -50,12 +73,13 @@ class NotificationService {
     );
   }
 
-  static Future<void> scheduleNotification(
-      int id, String title, String body, DateTime scheduledTime) async {
+  static Future<void> scheduleNotification(int id, String title, String body,
+      DateTime scheduledTime, String? payload) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
+      payload: payload,
       tz.TZDateTime.from(scheduledTime, tz.local),
       const NotificationDetails(
         iOS: DarwinNotificationDetails(),
