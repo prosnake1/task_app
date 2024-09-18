@@ -1,9 +1,18 @@
 part of 'login_bloc.dart';
 
-abstract class LoginState {}
+abstract class LoginState extends Equatable {}
 
-class LoginInitial extends LoginState {}
+class LoginInitial extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
-class SuccessLogin extends LoginState {}
+class SuccessLogin extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
 
-class FailedLogin extends LoginState {}
+class FailedLogin extends LoginState {
+  @override
+  List<Object?> get props => [];
+}
