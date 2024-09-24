@@ -72,7 +72,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 bloc: _signUpBloc,
                 listener: (context, state) {
                   if (state is SuccessSignUp) {
-                    GetIt.I.get<Talker>().error('Регистрация завершена');
+                    context.go('/login');
+                    GetIt.I.get<Talker>().info('Регистрация завершена');
                   }
                   if (state is FailedSignUp) {
                     GetIt.I.get<Talker>().error('Регистрация не завершена');
@@ -82,71 +83,37 @@ class _SignUpPageState extends State<SignUpPage> {
                   text: 'Создать аккаунт',
                   color: ThemeColors.green,
                   onTap: () async {
-                    var email = emailController.text.trim();
-                    var password = passController.text.trim();
-                    if (email.isEmpty || password.length < 7) {
-                      Fluttertoast.showToast(
-                          msg: 'Пожалуйста, заполните все поля');
-                      return;
-                    }
-                    if (email.isEmpty || password.isEmpty) {
-                      Fluttertoast.showToast(
-                          msg: 'Пожалуйста, заполните все поля');
-                      return;
-                    }
-
-                    if (password.length < 6) {
-                      Fluttertoast.showToast(
-                          msg: 'Слабый пароль. Нужно больше 6 символов');
-                      return;
-                    }
-
-                    _signUpBloc.add(
-                      AddUser(email: email, password: password),
-                    );
-                    context.go('/login');
+                    signUp();
                   },
                 ),
               ),
-              // BlocBuilder<SignUpBloc, SignUpState>(
-              //   bloc: _signUpBloc,
-              //   builder: (context, state) {
-              //     return TaskTextButton(
-              //       text: 'Создать аккаунт',
-              //       color: ThemeColors.green,
-              //       onTap: () async {
-              //         var email = emailController.text.trim();
-              //         var password = passController.text.trim();
-              //         if (email.isEmpty || password.length < 7) {
-              //           Fluttertoast.showToast(
-              //               msg: 'Пожалуйста, заполните все поля');
-              //           return;
-              //         }
-              //         if (email.isEmpty || password.isEmpty) {
-              //           Fluttertoast.showToast(
-              //               msg: 'Пожалуйста, заполните все поля');
-              //           return;
-              //         }
-
-              //         if (password.length < 6) {
-              //           Fluttertoast.showToast(
-              //               msg: 'Слабый пароль. Нужно больше 6 символов');
-              //           return;
-              //         }
-
-              //         _signUpBloc.add(
-              //           AddUser(email: email, password: password),
-              //         );
-              //         context.go('/home');
-              //       },
-              //     );
-              //   },
-              // ),
               10.ph,
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> signUp() async {
+    var email = emailController.text.trim();
+    var password = passController.text.trim();
+    if (email.isEmpty || password.length < 7) {
+      Fluttertoast.showToast(msg: 'Пожалуйста, заполните все поля');
+      return;
+    }
+    if (email.isEmpty || password.isEmpty) {
+      Fluttertoast.showToast(msg: 'Пожалуйста, заполните все поля');
+      return;
+    }
+
+    if (password.length < 6) {
+      Fluttertoast.showToast(msg: 'Слабый пароль. Нужно больше 6 символов');
+      return;
+    }
+
+    _signUpBloc.add(
+      AddUser(email: email, password: password),
     );
   }
 }
