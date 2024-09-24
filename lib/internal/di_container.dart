@@ -50,7 +50,7 @@ void setup() {
     () => SignUpBloc(AuthService()),
   );
   locator.registerLazySingleton<TasksListBloc>(
-    () => TasksListBloc(TaskRepository()),
+    () => TasksListBloc(GetIt.I.get<AbstractTaskRepository>()),
   );
 }
 

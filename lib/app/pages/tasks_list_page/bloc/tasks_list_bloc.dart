@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:task_app/data/services/task/task_service.dart';
 import 'package:task_app/domain/repositories/task/models/task.dart';
-import 'package:task_app/domain/repositories/task/task_repository.dart';
+import 'package:task_app/domain/repositories/task/task_repository_interface.dart';
 part 'tasks_list_event.dart';
 part 'tasks_list_state.dart';
 
@@ -15,7 +15,7 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
     on<AddTask>(_addTask);
     on<RemoveTask>(_removeTask);
   }
-  final TaskRepository _repository;
+  final AbstractTaskRepository _repository;
   Future<void> _loadList(LoadTasks event, Emitter<TasksListState> emit) async {
     try {
       emit(TasksListLoading());
