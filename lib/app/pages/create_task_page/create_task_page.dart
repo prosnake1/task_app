@@ -118,7 +118,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     text: 'Создать',
                     onTap: () async {
                       create();
-                      context.pop();
                     },
                   );
                 }
@@ -137,8 +136,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   }
 
   Future<void> create() async {
-    if (nameController.text.isEmpty || descController.text.isEmpty) {
-      Fluttertoast.showToast(msg: 'Пожалуйста, заполните все поля');
+    if (nameController.text.isEmpty) {
+      Fluttertoast.showToast(msg: 'Пожалуйста, заполните название');
       return;
     }
     _tasksBloc.add(
@@ -149,5 +148,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         time: timeController.text.toString(),
       ),
     );
+    context.pop();
   }
 }
