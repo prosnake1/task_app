@@ -23,6 +23,7 @@ class TaskRepository implements AbstractTaskRepository {
         Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
         GetIt.I.get<Talker>().debug(values);
         values.forEach((key, value) {
+          // fromJson(value) выдает ошибку
           Task film = Task(
               name: value['name'], desc: value['desc'], time: value['time']);
 
