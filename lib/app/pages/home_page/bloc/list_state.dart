@@ -13,10 +13,10 @@ class ListLoading extends ListState {
 }
 
 class LoadedList extends ListState {
-  LoadedList({required this.filmsList});
-  final List<ListTask> filmsList;
+  LoadedList({required this.list});
+  final List<ListTask> list;
   @override
-  List<Object?> get props => [filmsList];
+  List<Object?> get props => [list];
 }
 
 class ListFailure extends ListState {

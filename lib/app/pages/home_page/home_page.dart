@@ -54,13 +54,13 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) {
             if (state is LoadedList) {
               return ListView.separated(
-                itemCount: state.filmsList.length,
+                itemCount: state.list.length,
                 separatorBuilder: (context, index) => const Divider(
                   height: 32,
                 ),
                 itemBuilder: (context, i) {
-                  final list = state.filmsList[i];
-                  return MyList(list: list, listBloc: _listBloc);
+                  final list = state.list[i];
+                  return ListCard(list: list, listBloc: _listBloc);
                 },
               );
             }

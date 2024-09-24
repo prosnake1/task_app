@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:task_app/app/notification/notification.dart';
+import 'package:task_app/internal/notifications.dart';
 
 class TaskRepository {
   final DatabaseReference listRef = FirebaseDatabase.instance

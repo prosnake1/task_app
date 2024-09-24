@@ -4,8 +4,8 @@ import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
 import 'package:task_app/domain/list/list_task.dart';
 
-class MyList extends StatelessWidget {
-  const MyList({
+class ListCard extends StatelessWidget {
+  const ListCard({
     super.key,
     required this.list,
     required ListBloc listBloc,
