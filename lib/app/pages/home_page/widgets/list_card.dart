@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
@@ -8,14 +9,13 @@ class ListCard extends StatelessWidget {
   const ListCard({
     super.key,
     required this.list,
-    required ListBloc listBloc,
-  }) : _listBloc = listBloc;
+  });
 
   final ListTask list;
-  final ListBloc _listBloc;
 
   @override
   Widget build(BuildContext context) {
+    final _listBloc = GetIt.I.get<ListBloc>();
     return InkWell(
       onTap: () => context.push('/home/:title', extra: list.name),
       child: Container(

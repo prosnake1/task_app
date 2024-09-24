@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:task_app/data/services/list/list_service.dart';
+import 'package:task_app/data/services/list/list_service_interface.dart';
 import 'package:task_app/domain/repositories/list/list_repository_interface.dart';
 import 'package:task_app/domain/repositories/list/models/list_task.dart';
 part 'list_event.dart';
@@ -16,6 +16,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<RemoveList>(_removeList);
   }
   final AbstractListRepository _repository;
+  final service = GetIt.I.get<AbstractListService>();
   Future<void> _loadList(LoadList event, Emitter<ListState> emit) async {
     try {
       emit(ListLoading());
@@ -31,7 +32,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   Future<void> _addList(AddList event, Emitter<ListState> emit) async {
     try {
       emit(ListLoading());
-      ListService().add(event.name);
+      service.add(event.name);
       emit(LoadedList(list: await _repository.listFetchData()));
     } catch (e, st) {
       emit(ListFailure(exception: e));
@@ -41,7 +42,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
   Future<void> _removeList(RemoveList event, Emitter<ListState> emit) async {
     try {
-      ListService().remove(event.name);
+      service.remove(event.name);
       emit(LoadedList(list: await _repository.listFetchData()));
     } catch (e, st) {
       emit(ListFailure(exception: e));

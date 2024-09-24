@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
@@ -116,14 +117,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   return TaskTextButton(
                     text: 'Создать',
                     onTap: () async {
-                      _tasksBloc.add(
-                        AddTask(
-                          parent: widget.listName,
-                          name: nameController.text.toString(),
-                          desc: descController.text.toString(),
-                          time: timeController.text.toString(),
-                        ),
-                      );
+                      create();
                       context.pop();
                     },
                   );
@@ -138,6 +132,21 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> create() async {
+    if (nameController.text.isEmpty || descController.text.isEmpty) {
+      Fluttertoast.showToast(msg: 'Пожалуйста, заполните все поля');
+      return;
+    }
+    _tasksBloc.add(
+      AddTask(
+        parent: widget.listName,
+        name: nameController.text.toString(),
+        desc: descController.text.toString(),
+        time: timeController.text.toString(),
       ),
     );
   }

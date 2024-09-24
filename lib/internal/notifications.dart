@@ -19,13 +19,13 @@ class NotificationService {
       Map values = jsonDecode(notificationResponse.payload as String);
       router.goNamed(
         'task',
-        extra: values['parent'],
+        extra: values['parent'] ?? '',
         pathParameters: {
-          'title': values['parent'],
-          'name': values['name'],
+          'title': values['parent'] ?? '',
+          'name': values['name'] ?? '',
         },
         queryParameters: {
-          'desc': values['desc'],
+          'desc': values['desc'] ?? '',
         },
       );
     }

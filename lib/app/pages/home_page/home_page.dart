@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 itemBuilder: (context, i) {
                   final list = state.list[i];
-                  return ListCard(list: list, listBloc: _listBloc);
+                  return ListCard(list: list);
                 },
               );
             }

@@ -3,8 +3,8 @@ import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
 import 'package:task_app/domain/repositories/task/models/task.dart';
 
-class MyTask extends StatefulWidget {
-  const MyTask({
+class TaskCard extends StatefulWidget {
+  const TaskCard({
     super.key,
     required this.task,
     required this.onTap,
@@ -16,10 +16,10 @@ class MyTask extends StatefulWidget {
   final Function() onPressed;
 
   @override
-  State<MyTask> createState() => _MyTaskState();
+  State<TaskCard> createState() => _TaskCardState();
 }
 
-class _MyTaskState extends State<MyTask> {
+class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
@@ -56,6 +57,11 @@ class _CreateListState extends State<CreateList> {
                   return TaskTextButton(
                     text: 'Создать',
                     onTap: () async {
+                      if (nameController.text.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: 'Пожалуйста, заполните поле');
+                        return;
+                      }
                       _listBloc.add(AddList(name: nameController.text));
                       context.pop();
                     },
