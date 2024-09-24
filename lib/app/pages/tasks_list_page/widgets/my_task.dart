@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
-import 'package:task_app/domain/task/task.dart';
+import 'package:task_app/domain/repositories/task/models/task.dart';
 
 class MyTask extends StatefulWidget {
   const MyTask({

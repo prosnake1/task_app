@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/theme/box_decoration.dart';
-import 'package:task_app/domain/list/list_task.dart';
+import 'package:task_app/domain/repositories/list/models/list_task.dart';
 
 class ListCard extends StatelessWidget {
   const ListCard({

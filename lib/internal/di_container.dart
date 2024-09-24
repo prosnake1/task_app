@@ -6,18 +6,37 @@ import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/pages/login_page/bloc/login_bloc.dart';
 import 'package:task_app/app/pages/sign_up_page/bloc/sign_up_bloc.dart';
 import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
-import 'package:task_app/data/db/task/requests.dart';
 import 'package:task_app/data/services/auth/auth_service.dart';
-import 'package:task_app/domain/list/list_repository.dart';
-import 'package:task_app/domain/list/list_repository_interface.dart';
+import 'package:task_app/data/services/list/list_service.dart';
+import 'package:task_app/data/services/list/list_service_interface.dart';
+import 'package:task_app/data/services/task/task_service.dart';
+import 'package:task_app/data/services/task/task_service_interface.dart';
+import 'package:task_app/domain/repositories/list/list_repository.dart';
+import 'package:task_app/domain/repositories/list/list_repository_interface.dart';
+import 'package:task_app/domain/repositories/task/task_repository.dart';
+import 'package:task_app/domain/repositories/task/task_repository_interface.dart';
 
 GetIt locator = GetIt.I;
 final talker = TalkerFlutter.init();
 void setup() {
   setupTalker();
+  //     repositories
+  // list
   locator.registerLazySingleton<AbstractListRepository>(
     () => ListRepository(),
   );
+  locator.registerLazySingleton<AbstractListService>(
+    () => ListService(),
+  );
+  // task
+  locator.registerLazySingleton<AbstractTaskRepository>(
+    () => TaskRepository(),
+  );
+
+  locator.registerLazySingleton<AbstractTaskService>(
+    () => TaskService(),
+  );
+
   // bloc
   locator.registerLazySingleton<LoginBloc>(
     () => LoginBloc(AuthService()),
@@ -41,6 +60,8 @@ void setupTalker() {
   Bloc.observer = TalkerBlocObserver(
     talker: talker,
     settings: const TalkerBlocLoggerSettings(
-        printStateFullData: false, printEventFullData: false),
+      printStateFullData: false,
+      printEventFullData: false,
+    ),
   );
 }

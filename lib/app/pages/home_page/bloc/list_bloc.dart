@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:task_app/data/db/list/requests.dart';
-import 'package:task_app/domain/list/list_repository_interface.dart';
-import 'package:task_app/domain/list/list_task.dart';
+import 'package:task_app/data/services/list/list_service.dart';
+import 'package:task_app/domain/repositories/list/list_repository_interface.dart';
+import 'package:task_app/domain/repositories/list/models/list_task.dart';
 part 'list_event.dart';
 part 'list_state.dart';
 

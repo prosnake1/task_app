@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:task_app/domain/list/model.dart';
+import 'package:task_app/domain/repositories/list/list_repository_interface.dart';
+import 'package:task_app/domain/repositories/list/models/list_task.dart';
 
-class ListDataRepository {
+class ListRepository implements AbstractListRepository {
+  @override
   Future<List<ListTask>> listFetchData() async {
     DatabaseReference databaseRef = FirebaseDatabase.instance
         .ref()

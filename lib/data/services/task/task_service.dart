@@ -2,14 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:task_app/data/services/task/task_service_interface.dart';
 import 'package:task_app/internal/notifications.dart';
 
-class TaskRepository {
+class TaskService implements AbstractTaskService {
   final DatabaseReference listRef = FirebaseDatabase.instance
       .ref()
       .child('users')
       .child(FirebaseAuth.instance.currentUser!.uid)
       .child('lists');
+  @override
   Future<void> add(
       String name, String desc, String? time, String parent) async {
     if (FirebaseAuth.instance.currentUser != null) {
@@ -31,6 +33,7 @@ class TaskRepository {
     }
   }
 
+  @override
   Future<void> remove(String name, String parent) async {
     try {
       NotificationService.flutterLocalNotificationsPlugin.cancel(
