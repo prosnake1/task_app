@@ -8,17 +8,24 @@ import 'package:task_app/app/pages/sign_up_page/bloc/sign_up_bloc.dart';
 import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/data/db/task/requests.dart';
 import 'package:task_app/data/services/auth/auth_service.dart';
-import 'package:task_app/domain/list/list_db.dart';
+import 'package:task_app/domain/list/list_repository.dart';
+import 'package:task_app/domain/list/list_repository_interface.dart';
 
 GetIt locator = GetIt.I;
 final talker = TalkerFlutter.init();
 void setup() {
   setupTalker();
+  locator.registerLazySingleton<AbstractListRepository>(
+    () => ListRepository(),
+  );
+  // bloc
   locator.registerLazySingleton<LoginBloc>(
     () => LoginBloc(AuthService()),
   );
   locator.registerLazySingleton<ListBloc>(
-    () => ListBloc(ListDataRepository()),
+    () => ListBloc(
+      GetIt.I.get<AbstractListRepository>(),
+    ),
   );
   locator.registerLazySingleton<SignUpBloc>(
     () => SignUpBloc(AuthService()),
