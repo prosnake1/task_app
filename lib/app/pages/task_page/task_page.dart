@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/app/router.dart';
 import 'package:task_app/app/theme/colors.dart';
 
 class TaskPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class _TaskPageState extends State<TaskPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
+        leading: IconButton(
+            onPressed: () => router.pop(), icon: const Icon(Icons.arrow_back)),
       ),
       body: Center(
         child: Column(

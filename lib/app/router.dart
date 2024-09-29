@@ -14,6 +14,16 @@ GoRouter router = GoRouter(
       builder: (context, state) => const HomePage(),
       routes: [
         GoRoute(
+          path: 'task',
+          name: 'noti_task',
+          builder: (context, state) {
+            return TaskPage(
+              name: state.uri.queryParameters['name'].toString(),
+              desc: state.uri.queryParameters['desc'].toString(),
+            );
+          },
+        ),
+        GoRoute(
           path: 'create-list',
           builder: (context, state) => const CreateList(),
         ),
@@ -48,16 +58,6 @@ GoRouter router = GoRouter(
           ],
         ),
       ],
-    ),
-    GoRoute(
-      path: '/task',
-      name: 'noti_task',
-      builder: (context, state) {
-        return TaskPage(
-          name: state.uri.queryParameters['name'].toString(),
-          desc: state.uri.queryParameters['desc'].toString(),
-        );
-      },
     ),
     GoRoute(
       path: '/login',

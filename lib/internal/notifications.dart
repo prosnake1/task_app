@@ -17,21 +17,10 @@ class NotificationService {
             'Payload: ${notificationResponse.payload}',
           );
       Map values = jsonDecode(notificationResponse.payload as String);
-      router.goNamed('/task', queryParameters: {
+      router.goNamed('noti_task', queryParameters: {
         'name': values['name'],
         'desc': values['desc'],
       });
-      // router.goNamed(
-      //   'task',
-      //   extra: values['parent'],
-      //   pathParameters: {
-      //     'title': values['parent'],
-      //     'name': values['name'],
-      //   },
-      //   queryParameters: {
-      //     'desc': values['desc'],
-      //   },
-      // );
     }
   }
 
@@ -51,7 +40,6 @@ class NotificationService {
       onDidReceiveNotificationResponse: onDidReceiveNotification,
       onDidReceiveBackgroundNotificationResponse: onDidReceiveNotification,
     );
-
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
