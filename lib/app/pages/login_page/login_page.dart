@@ -18,8 +18,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _loginBloc = GetIt.I.get<LoginBloc>();
+  bool isActivated = true;
   late FocusNode _focusNode;
+  final _loginBloc = GetIt.I.get<LoginBloc>();
   var emailController = TextEditingController();
   var passController = TextEditingController();
   @override
@@ -30,49 +31,56 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('images/icon.png'),
-                    const Text(
-                      'Вход мои Задачи',
-                      textAlign: TextAlign.center,
-                    ),
-                    20.ph,
-                    TaskTextField(
-                      text: 'Почта',
-                      controller: emailController,
-                      autoFocus: true,
-                      focusNode: _focusNode,
-                    ),
-                    20.ph,
-                    TaskTextField(
-                      text: 'Пароль',
-                      controller: passController,
-                    ),
-                    20.ph,
-                    BlocListener<LoginBloc, LoginState>(
-                      bloc: _loginBloc,
-                      listener: (context, state) {
-                        if (state is SuccessLogin) {
-                          GetIt.I.get<Talker>().debug('Вход выполнен');
-                          context.go('/home');
-                        }
-                        if (state is FailedLogin) {
-                          GetIt.I.get<Talker>().error('Вход не завершена');
-                        }
-                      },
-                      child: TaskTextButton(
+    return BlocListener<LoginBloc, LoginState>(
+      bloc: _loginBloc,
+      listener: (context, state) {
+        if (state is SuccessLogin) {
+          GetIt.I.get<Talker>().debug('Вход выполнен');
+          context.go('/home');
+        }
+        if (state is FailedLogin) {
+          GetIt.I.get<Talker>().error('Вход не завершена');
+          isActivated = true;
+          setState(() {});
+        }
+        if (state is LoadingLogin) {
+          isActivated = false;
+          setState(() {});
+        }
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('images/icon.png'),
+                      const Text(
+                        'Вход Мои Задачи',
+                        textAlign: TextAlign.center,
+                      ),
+                      20.ph,
+                      TaskTextField(
+                        text: 'Почта',
+                        controller: emailController,
+                        autoFocus: true,
+                        focusNode: _focusNode,
+                      ),
+                      20.ph,
+                      TaskTextField(
+                        text: 'Пароль',
+                        controller: passController,
+                      ),
+                      20.ph,
+                      TaskTextButton(
                         text: 'Войти',
                         color: ThemeColors.primary,
+                        isActivated: isActivated,
                         onTap: () async {
                           var email = emailController.text.trim();
                           var password = passController.text.trim();
@@ -91,17 +99,16 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              TaskTextButton(
-                text: 'Зарегистрироваться',
-                color: ThemeColors.green,
-                onTap: () => context.push('/login/sign-up'),
-              ),
-              10.ph,
-            ],
+                TaskTextButton(
+                  text: 'Зарегистрироваться',
+                  color: ThemeColors.green,
+                  onTap: () => context.push('/login/sign-up'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

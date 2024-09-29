@@ -21,7 +21,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       emit(ListLoading());
       if (FirebaseAuth.instance.currentUser != null) {
-        emit(LoadedList(list: await _repository.listFetchData()));
+        emit(LoadedList(list: await _repository.getLists()));
       }
     } catch (e, st) {
       emit(ListFailure(exception: e));
@@ -33,7 +33,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     try {
       emit(ListLoading());
       service.add(event.name);
-      emit(LoadedList(list: await _repository.listFetchData()));
+      emit(LoadedList(list: await _repository.getLists()));
     } catch (e, st) {
       emit(ListFailure(exception: e));
       GetIt.I<Talker>().handle(e, st);
@@ -43,7 +43,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
   Future<void> _removeList(RemoveList event, Emitter<ListState> emit) async {
     try {
       service.remove(event.name);
-      emit(LoadedList(list: await _repository.listFetchData()));
+      emit(LoadedList(list: await _repository.getLists()));
     } catch (e, st) {
       emit(ListFailure(exception: e));
       GetIt.I<Talker>().handle(e, st);

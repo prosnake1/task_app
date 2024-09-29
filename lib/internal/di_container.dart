@@ -22,19 +22,18 @@ void setup() {
   setupTalker();
   //     repositories
   // list
-  locator.registerLazySingleton<AbstractListRepository>(
-    () => ListRepository(),
-  );
   locator.registerLazySingleton<AbstractListService>(
     () => ListService(),
   );
-  // task
-  locator.registerLazySingleton<AbstractTaskRepository>(
-    () => TaskRepository(),
+  locator.registerLazySingleton<AbstractListRepository>(
+    () => ListRepository(locator<AbstractListService>()),
   );
-
+  // task
   locator.registerLazySingleton<AbstractTaskService>(
     () => TaskService(),
+  );
+  locator.registerLazySingleton<AbstractTaskRepository>(
+    () => TaskRepository(locator<AbstractTaskService>()),
   );
 
   // bloc

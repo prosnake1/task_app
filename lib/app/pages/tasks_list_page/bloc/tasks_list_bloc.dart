@@ -20,8 +20,7 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
     try {
       emit(TasksListLoading());
       if (FirebaseAuth.instance.currentUser != null) {
-        emit(LoadedTasksList(
-            tasks: await _repository.fetchTaskData(event.name)));
+        emit(LoadedTasksList(tasks: await _repository.getTasks(event.name)));
       }
     } catch (e, st) {
       emit(TasksListFailure(error: e));
@@ -33,8 +32,7 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
     try {
       emit(TasksListLoading());
       TaskService().add(event.name, event.desc, event.time, event.parent);
-      emit(LoadedTasksList(
-          tasks: await _repository.fetchTaskData(event.parent)));
+      emit(LoadedTasksList(tasks: await _repository.getTasks(event.parent)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);
@@ -45,8 +43,7 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
       RemoveTask event, Emitter<TasksListState> emit) async {
     try {
       TaskService().remove(event.name, event.parent);
-      emit(LoadedTasksList(
-          tasks: await _repository.fetchTaskData(event.parent)));
+      emit(LoadedTasksList(tasks: await _repository.getTasks(event.parent)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));
       GetIt.I.get<Talker>().handle(e, st);

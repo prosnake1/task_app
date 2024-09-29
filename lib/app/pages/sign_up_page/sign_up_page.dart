@@ -17,10 +17,11 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool isActivated = true;
   final _signUpBloc = GetIt.I.get<SignUpBloc>();
-  late FocusNode _focusNode;
   var emailController = TextEditingController();
   var passController = TextEditingController();
+  late FocusNode _focusNode;
   @override
   void initState() {
     _focusNode = FocusNode();
@@ -29,66 +30,73 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    const Text('Введите почту'),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 80.0, right: 80.0),
-                      child: Text(
-                        'Ваша почта будет использоваться для входа в аккаунт',
-                        style: Theme.of(context).textTheme.labelMedium,
-                        textAlign: TextAlign.center,
+    return BlocListener<SignUpBloc, SignUpState>(
+      bloc: _signUpBloc,
+      listener: (context, state) {
+        if (state is SuccessSignUp) {
+          context.go('/login');
+          GetIt.I.get<Talker>().info('Регистрация завершена');
+        }
+        if (state is FailedSignUp) {
+          GetIt.I.get<Talker>().error('Регистрация не завершена');
+          isActivated = true;
+          setState(() {});
+        }
+        if (state is LoadingSignUp) {
+          isActivated = false;
+          setState(() {});
+        }
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: AppBar(),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      const Text('Введите почту'),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 80.0, right: 80.0),
+                        child: Text(
+                          'Ваша почта будет использоваться для входа в аккаунт',
+                          style: Theme.of(context).textTheme.labelMedium,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    20.ph,
-                    TaskTextField(
-                      text: 'Почта',
-                      controller: emailController,
-                      autoFocus: true,
-                      focusNode: _focusNode,
-                    ),
-                    30.ph,
-                    TaskTextField(
-                      text: 'Придумайте пароль',
-                      controller: passController,
-                    ),
-                    const Text(
-                      '* Пароль должен содержать более 6 символов!',
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
-                    ),
-                  ],
+                      20.ph,
+                      TaskTextField(
+                        text: 'Почта',
+                        controller: emailController,
+                        autoFocus: true,
+                        focusNode: _focusNode,
+                      ),
+                      30.ph,
+                      TaskTextField(
+                        text: 'Придумайте пароль',
+                        controller: passController,
+                      ),
+                      const Text(
+                        '* Пароль должен содержать более 6 символов!',
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              BlocListener<SignUpBloc, SignUpState>(
-                bloc: _signUpBloc,
-                listener: (context, state) {
-                  if (state is SuccessSignUp) {
-                    context.go('/login');
-                    GetIt.I.get<Talker>().info('Регистрация завершена');
-                  }
-                  if (state is FailedSignUp) {
-                    GetIt.I.get<Talker>().error('Регистрация не завершена');
-                  }
-                },
-                child: TaskTextButton(
-                  text: 'Создать аккаунт',
-                  color: ThemeColors.green,
-                  onTap: () async {
-                    signUp();
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: TaskTextButton(
+                    text: 'Создать аккаунт',
+                    color: ThemeColors.green,
+                    isActivated: isActivated,
+                    onTap: signUp,
+                  ),
                 ),
-              ),
-              10.ph,
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -113,7 +121,10 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     _signUpBloc.add(
-      AddUser(email: email, password: password),
+      AddUser(
+        email: email,
+        password: password,
+      ),
     );
   }
 }

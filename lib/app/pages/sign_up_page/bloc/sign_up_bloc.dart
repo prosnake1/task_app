@@ -14,7 +14,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     var password = event.password;
     var email = event.email;
     try {
-      emit(SignUpInitial());
+      emit(LoadingSignUp());
       bool isSuccess = await _service.createUser(email, password);
       if (isSuccess) {
         emit(SuccessSignUp());

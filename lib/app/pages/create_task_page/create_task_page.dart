@@ -31,7 +31,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         title: Text('Создать задачу в списке ${widget.listName}'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,7 +39,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Text('Название', style: TextStyle(fontSize: 18)),
+                    const Text(
+                      'Название',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     SizedBox(
                       height: 40,
                       child: TextField(

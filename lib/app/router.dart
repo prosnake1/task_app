@@ -54,7 +54,7 @@ GoRouter router = GoRouter(
       name: 'noti_task',
       builder: (context, state) {
         return TaskPage(
-          name: state.pathParameters['name'].toString(),
+          name: state.uri.queryParameters['name'].toString(),
           desc: state.uri.queryParameters['desc'].toString(),
         );
       },

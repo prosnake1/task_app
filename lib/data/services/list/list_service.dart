@@ -5,16 +5,27 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:task_app/data/services/list/list_service_interface.dart';
 
 class ListService implements AbstractListService {
-  final DatabaseReference databaseRef = FirebaseDatabase.instance
+  final DatabaseReference listRef = FirebaseDatabase.instance
       .ref()
       .child('users')
       .child(FirebaseAuth.instance.currentUser!.uid)
       .child('lists');
   @override
+  Future<DataSnapshot> getLists() async {
+    try {
+      DatabaseEvent event = await listRef.once();
+      DataSnapshot snapshot = event.snapshot;
+      return snapshot;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> add(String name) async {
     try {
       if (FirebaseAuth.instance.currentUser != null) {
-        await databaseRef.child(name).set(
+        await listRef.child(name).set(
           {
             'name': name,
           },
@@ -32,7 +43,7 @@ class ListService implements AbstractListService {
     try {
       if (FirebaseAuth.instance.currentUser != null) {
         if (FirebaseAuth.instance.currentUser != null) {
-          await databaseRef.child(name).remove();
+          await listRef.child(name).remove();
         }
       } else {
         GetIt.I.get<Talker>().debug('User is empty!');

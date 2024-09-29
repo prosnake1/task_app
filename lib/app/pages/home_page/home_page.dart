@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/pages/home_page/widgets/widgets.dart';
+import 'package:task_app/app/pages/login_page/bloc/login_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _listBloc = GetIt.I.get<ListBloc>();
+  final _logBloc = GetIt.I.get<LoginBloc>();
   @override
   void initState() {
     _listBloc.add(LoadList());
@@ -38,10 +38,7 @@ class _HomePageState extends State<HomePage> {
         ),
         automaticallyImplyLeading: false,
         leading: IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              context.go('/login');
-            },
+            onPressed: () => _logBloc.add(LogOut()),
             icon: const Icon(Icons.logout)),
         actions: const [
           AddButton(),

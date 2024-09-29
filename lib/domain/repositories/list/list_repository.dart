@@ -1,36 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:get_it/get_it.dart';
-import 'package:talker_flutter/talker_flutter.dart';
+import 'package:task_app/data/services/list/list_service_interface.dart';
 import 'package:task_app/domain/repositories/list/list_repository_interface.dart';
 import 'package:task_app/domain/repositories/list/models/list_task.dart';
+import 'package:task_app/internal/di_container.dart';
 
 class ListRepository implements AbstractListRepository {
+  ListRepository(this.listService);
+  final AbstractListService listService;
   @override
-  Future<List<ListTask>> listFetchData() async {
-    DatabaseReference databaseRef = FirebaseDatabase.instance
-        .ref()
-        .child('users')
-        .child(FirebaseAuth.instance.currentUser!.uid)
-        .child('lists');
-    List<ListTask> listTaskList = [];
+  Future<List<ListTask>> getLists() async {
     try {
-      DatabaseEvent event = await databaseRef.once();
-      DataSnapshot snapshot = event.snapshot;
+      final snapshot = await listService.getLists();
       if (snapshot.value != null) {
-        Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
-        values.forEach((key, value) {
-          ListTask listTask = ListTask(
-            name: value['name'],
-          );
-          listTaskList.add(listTask);
-        });
-      } else {
-        GetIt.I<Talker>().debug('Data in Collection is Empty!');
+        final values = snapshot.value as Map<dynamic, dynamic>;
+        talker.debug(values);
+        final lists = values.entries
+            .map(
+              (e) => ListTask.fromJson(Map<String, dynamic>.from(e.value)),
+            )
+            .toList();
+        return lists;
       }
-    } catch (error) {
-      throw Error();
+    } catch (e) {
+      rethrow;
     }
-    return listTaskList;
+    return [];
   }
 }

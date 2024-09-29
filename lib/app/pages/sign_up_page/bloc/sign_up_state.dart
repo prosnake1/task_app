@@ -12,6 +12,11 @@ class SuccessSignUp extends SignUpState {
   List<Object?> get props => [];
 }
 
+class LoadingSignUp extends SignUpState {
+  @override
+  List<Object?> get props => [];
+}
+
 class FailedSignUp extends SignUpState {
   @override
   List<Object?> get props => [];

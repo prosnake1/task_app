@@ -14,20 +14,24 @@ class NotificationService {
       NotificationResponse notificationResponse) async {
     if (notificationResponse.payload != null) {
       GetIt.I.get<Talker>().debug(
-            'notification payload: ${notificationResponse.payload}',
+            'Payload: ${notificationResponse.payload}',
           );
       Map values = jsonDecode(notificationResponse.payload as String);
-      router.goNamed(
-        'task',
-        extra: values['parent'] ?? '',
-        pathParameters: {
-          'title': values['parent'] ?? '',
-          'name': values['name'] ?? '',
-        },
-        queryParameters: {
-          'desc': values['desc'] ?? '',
-        },
-      );
+      router.goNamed('/task', queryParameters: {
+        'name': values['name'],
+        'desc': values['desc'],
+      });
+      // router.goNamed(
+      //   'task',
+      //   extra: values['parent'],
+      //   pathParameters: {
+      //     'title': values['parent'],
+      //     'name': values['name'],
+      //   },
+      //   queryParameters: {
+      //     'desc': values['desc'],
+      //   },
+      // );
     }
   }
 

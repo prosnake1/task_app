@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/pages/home_page/bloc/list_bloc.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
@@ -32,7 +31,7 @@ class _CreateListState extends State<CreateList> {
         title: const Text('Создать список'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,7 +48,6 @@ class _CreateListState extends State<CreateList> {
                 ],
               ),
             ),
-            10.ph,
             BlocBuilder<ListBloc, ListState>(
               bloc: _listBloc,
               builder: (context, state) {

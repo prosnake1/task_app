@@ -9,3 +9,8 @@ class LogIn extends LoginEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class LogOut extends LoginEvent {
+  @override
+  List<Object?> get props => [];
+}
