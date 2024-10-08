@@ -5,9 +5,10 @@ part 'list_task.g.dart';
 
 @JsonSerializable()
 class ListTask {
-  ListTask({required this.name});
+  ListTask({required this.name, required this.id});
   final String name;
-  ListTask.fromSnapshot(DataSnapshot snapshot)
+  final String id;
+  ListTask.fromSnapshot(DataSnapshot snapshot, this.id)
       : name = (snapshot.value as Map<String, dynamic>?)?['name'] ?? '';
   factory ListTask.fromJson(Map<String, dynamic> json) =>
       _$ListTaskFromJson(json);

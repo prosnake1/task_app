@@ -16,9 +16,9 @@ class AddList extends ListEvent {
 }
 
 class RemoveList extends ListEvent {
-  RemoveList({required this.name});
-  final String name;
+  RemoveList({required this.id});
+  final String id;
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [id];
 }

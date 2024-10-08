@@ -8,8 +8,10 @@ part of 'list_task.dart';
 
 ListTask _$ListTaskFromJson(Map<String, dynamic> json) => ListTask(
       name: json['name'] as String,
+      id: json['id'],
     );
 
 Map<String, dynamic> _$ListTaskToJson(ListTask instance) => <String, dynamic>{
       'name': instance.name,
+      'id': instance.id,
     };

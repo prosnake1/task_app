@@ -37,7 +37,7 @@ class ListCard extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () async {
-                      _listBloc.add(RemoveList(name: list.name));
+                      _listBloc.add(RemoveList(id: list.id));
                     },
                     icon: const Icon(Icons.delete),
                   )

@@ -24,10 +24,12 @@ class ListService implements AbstractListService {
   @override
   Future<void> add(String name) async {
     try {
+      String id = listRef.push().key.toString();
       if (FirebaseAuth.instance.currentUser != null) {
-        await listRef.child(name).set(
+        await listRef.child(id).set(
           {
             'name': name,
+            'id': id,
           },
         );
       } else {
@@ -39,11 +41,11 @@ class ListService implements AbstractListService {
   }
 
   @override
-  Future<void> remove(String name) async {
+  Future<void> remove(String id) async {
     try {
       if (FirebaseAuth.instance.currentUser != null) {
         if (FirebaseAuth.instance.currentUser != null) {
-          await listRef.child(name).remove();
+          await listRef.child(id).remove();
         }
       } else {
         GetIt.I.get<Talker>().debug('User is empty!');

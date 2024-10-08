@@ -42,7 +42,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
   Future<void> _removeList(RemoveList event, Emitter<ListState> emit) async {
     try {
-      service.remove(event.name);
+      service.remove(event.id);
       emit(LoadedList(list: await _repository.getLists()));
     } catch (e, st) {
       emit(ListFailure(exception: e));
