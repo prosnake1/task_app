@@ -27,7 +27,7 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Задачи'),
         actions: [
           IconButton(
             onPressed: () {
@@ -76,7 +76,7 @@ class _ListPageState extends State<ListPage> {
                     onPressed: () async {
                       _tasksListBloc.add(
                         RemoveTask(
-                          name: task.name,
+                          id: task.id,
                           parent: widget.title.toString(),
                         ),
                       );

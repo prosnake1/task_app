@@ -10,8 +10,8 @@ import 'package:task_app/app/theme/colors.dart';
 import 'package:task_app/app/widgets/widgets.dart';
 
 class CreateTaskPage extends StatefulWidget {
-  const CreateTaskPage({super.key, required this.listName});
-  final String listName;
+  const CreateTaskPage({super.key, required this.listId});
+  final String listId;
 
   @override
   State<CreateTaskPage> createState() => _CreateTaskPageState();
@@ -28,7 +28,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Создать задачу в списке ${widget.listName}'),
+        title: Text('Создать задачу в списке ${widget.listId}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -145,7 +145,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     }
     _tasksBloc.add(
       AddTask(
-        parent: widget.listName,
+        parent: widget.listId,
         name: nameController.text.toString(),
         desc: descController.text.toString(),
         time: timeController.text.toString(),

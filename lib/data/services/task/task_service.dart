@@ -27,15 +27,17 @@ class TaskService implements AbstractTaskService {
   Future<void> add(
       String name, String desc, String? time, String parent) async {
     if (FirebaseAuth.instance.currentUser != null) {
-      await listRef.child(parent).child('tasks').child(name).set({
+      String id = listRef.push().key.toString();
+      await listRef.child(parent).child('tasks').child(id).set({
         'name': name,
         'desc': desc,
         'time': time,
+        'id': id,
       });
       if (time!.isNotEmpty) {
-        int id = name.hashCode;
+        int nid = id.hashCode;
         NotificationService.scheduleNotification(
-          id,
+          nid,
           name,
           desc,
           DateTime.parse(time.toString()),
@@ -46,13 +48,13 @@ class TaskService implements AbstractTaskService {
   }
 
   @override
-  Future<void> remove(String name, String parent) async {
+  Future<void> remove(String id, String parent) async {
     try {
       NotificationService.flutterLocalNotificationsPlugin.cancel(
-        name.hashCode,
+        id.hashCode,
       );
       if (FirebaseAuth.instance.currentUser != null) {
-        await listRef.child(parent).child('tasks').child(name).remove();
+        await listRef.child(parent).child('tasks').child(id).remove();
       }
     } catch (e, st) {
       GetIt.I.get<Talker>().handle(e, st);

@@ -8,9 +8,9 @@ class TaskRepository implements AbstractTaskRepository {
   final AbstractTaskService taskService;
 
   @override
-  Future<List<Task>> getTasks(String name) async {
+  Future<List<Task>> getTasks(String id) async {
     try {
-      final snapshot = await taskService.getTasks(name);
+      final snapshot = await taskService.getTasks(id);
       if (snapshot.value != null) {
         final values = snapshot.value as Map<dynamic, dynamic>;
         talker.debug(values);

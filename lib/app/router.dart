@@ -41,7 +41,7 @@ GoRouter router = GoRouter(
               builder: (context, state) {
                 final name = state.extra as String;
                 return CreateTaskPage(
-                  listName: name,
+                  listId: name,
                 );
               },
             ),

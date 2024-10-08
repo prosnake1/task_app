@@ -42,7 +42,7 @@ class TasksListBloc extends Bloc<TasksListEvent, TasksListState> {
   Future<void> _removeTask(
       RemoveTask event, Emitter<TasksListState> emit) async {
     try {
-      TaskService().remove(event.name, event.parent);
+      TaskService().remove(event.id, event.parent);
       emit(LoadedTasksList(tasks: await _repository.getTasks(event.parent)));
     } catch (e, st) {
       emit(TasksListFailure(error: e));

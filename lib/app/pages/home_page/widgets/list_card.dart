@@ -17,7 +17,7 @@ class ListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _listBloc = GetIt.I.get<ListBloc>();
     return InkWell(
-      onTap: () => context.push('/home/:title', extra: list.name),
+      onTap: () => context.push('/home/:title', extra: list.id),
       child: Container(
         decoration: boxDecor,
         height: 91,

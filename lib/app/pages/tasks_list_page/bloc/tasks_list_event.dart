@@ -27,10 +27,10 @@ class AddTask extends TasksListEvent {
 }
 
 class RemoveTask extends TasksListEvent {
-  RemoveTask({required this.name, required this.parent});
-  final String name;
+  RemoveTask({required this.id, required this.parent});
+  final String id;
   final String parent;
 
   @override
-  List<Object?> get props => [name, parent];
+  List<Object?> get props => [id, parent];
 }
