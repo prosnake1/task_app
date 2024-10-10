@@ -12,11 +12,26 @@ class NotificationService {
 
   static Future<void> onDidReceiveNotification(
       NotificationResponse notificationResponse) async {
+    final String? payload = notificationResponse.payload;
     if (notificationResponse.payload != null) {
       GetIt.I.get<Talker>().debug(
-            'Payload: ${notificationResponse.payload}',
+            'Payload: $payload',
           );
-      Map values = jsonDecode(notificationResponse.payload as String);
+      Map values = jsonDecode(payload as String);
+      router.goNamed('noti_task', queryParameters: {
+        'name': values['name'],
+        'desc': values['desc'],
+      });
+    }
+  }
+
+  static Future<void> onDidReceiveBackgroundNotificationResponse(
+      String? payload) async {
+    if (payload != null) {
+      GetIt.I.get<Talker>().debug(
+            'Payload: $payload',
+          );
+      Map values = jsonDecode(payload);
       router.goNamed('noti_task', queryParameters: {
         'name': values['name'],
         'desc': values['desc'],
@@ -38,8 +53,18 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotification,
-      onDidReceiveBackgroundNotificationResponse: onDidReceiveNotification,
     );
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await NotificationService.flutterLocalNotificationsPlugin
+            .getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp == true) {
+      if (notificationAppLaunchDetails?.notificationResponse != null) {
+        onDidReceiveBackgroundNotificationResponse(notificationAppLaunchDetails!
+            .notificationResponse!.payload
+            .toString());
+      }
+    }
+
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()

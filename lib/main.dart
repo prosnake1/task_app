@@ -16,10 +16,9 @@ void main() async {
       await Firebase.initializeApp();
       tz.initializeTimeZones();
       NotificationService.init();
-
+      runApp(const MyApp());
       FlutterError.onError = (details) =>
           GetIt.I<Talker>().handle(details.exception, details.stack);
-      runApp(const MyApp());
     },
     (error, stack) {
       GetIt.I<Talker>().handle(error, stack);
