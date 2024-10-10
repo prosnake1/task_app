@@ -15,7 +15,7 @@ class ListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _listBloc = GetIt.I.get<ListBloc>();
+    final listBloc = GetIt.I.get<ListBloc>();
     return InkWell(
       onTap: () => context.push('/home/:title', extra: list.id),
       child: Container(
@@ -37,7 +37,7 @@ class ListCard extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () async {
-                      _listBloc.add(RemoveList(id: list.id));
+                      listBloc.add(RemoveList(id: list.id));
                     },
                     icon: const Icon(Icons.delete),
                   )
