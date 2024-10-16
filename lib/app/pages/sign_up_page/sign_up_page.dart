@@ -56,34 +56,37 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: Column(
-                    children: [
-                      const Text('Введите почту'),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 80.0, right: 80.0),
-                        child: Text(
-                          'Ваша почта будет использоваться для входа в аккаунт',
-                          style: Theme.of(context).textTheme.labelMedium,
-                          textAlign: TextAlign.center,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const Text('Введите почту'),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 80.0, right: 80.0),
+                          child: Text(
+                            'Ваша почта будет использоваться для входа в аккаунт',
+                            style: Theme.of(context).textTheme.labelMedium,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                      20.ph,
-                      TaskTextField(
-                        text: 'Почта',
-                        controller: emailController,
-                        autoFocus: true,
-                        focusNode: _focusNode,
-                      ),
-                      30.ph,
-                      TaskTextField(
-                        text: 'Придумайте пароль',
-                        controller: passController,
-                      ),
-                      const Text(
-                        '* Пароль должен содержать более 6 символов!',
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
-                    ],
+                        20.ph,
+                        TaskTextField(
+                          text: 'Почта',
+                          controller: emailController,
+                          autoFocus: true,
+                          focusNode: _focusNode,
+                        ),
+                        30.ph,
+                        TaskTextField(
+                          text: 'Придумайте пароль',
+                          controller: passController,
+                        ),
+                        const Text(
+                          '* Пароль должен содержать более 6 символов!',
+                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

@@ -56,51 +56,54 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('images/icon.png'),
-                      const Text(
-                        'Вход Мои Задачи',
-                        textAlign: TextAlign.center,
-                      ),
-                      20.ph,
-                      TaskTextField(
-                        text: 'Почта',
-                        controller: emailController,
-                        autoFocus: true,
-                        focusNode: _focusNode,
-                      ),
-                      20.ph,
-                      TaskTextField(
-                        text: 'Пароль',
-                        controller: passController,
-                      ),
-                      20.ph,
-                      TaskTextButton(
-                        text: 'Войти',
-                        color: ThemeColors.primary,
-                        isActivated: isActivated,
-                        onTap: () async {
-                          var email = emailController.text.trim();
-                          var password = passController.text.trim();
-                          if (email.isEmpty) {
-                            Fluttertoast.showToast(msg: 'Введите почту');
-                            Vibrate.vibrate();
-                            return;
-                          }
-                          if (password.isEmpty) {
-                            Fluttertoast.showToast(msg: 'Введите пароль');
-                            Vibrate.vibrate();
-                            return;
-                          }
-                          _loginBloc.add(
-                            LogIn(email: email, password: password),
-                          );
-                        },
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        (MediaQuery.of(context).size.height / 5).ph,
+                        Image.asset('images/icon.png'),
+                        const Text(
+                          'Вход Мои Задачи',
+                          textAlign: TextAlign.center,
+                        ),
+                        20.ph,
+                        TaskTextField(
+                          text: 'Почта',
+                          controller: emailController,
+                          autoFocus: true,
+                          focusNode: _focusNode,
+                        ),
+                        20.ph,
+                        TaskTextField(
+                          text: 'Пароль',
+                          controller: passController,
+                        ),
+                        20.ph,
+                      ],
+                    ),
                   ),
+                ),
+                TaskTextButton(
+                  text: 'Войти',
+                  color: ThemeColors.primary,
+                  isActivated: isActivated,
+                  onTap: () async {
+                    var email = emailController.text.trim();
+                    var password = passController.text.trim();
+                    if (email.isEmpty) {
+                      Fluttertoast.showToast(msg: 'Введите почту');
+                      Vibrate.vibrate();
+                      return;
+                    }
+                    if (password.isEmpty) {
+                      Fluttertoast.showToast(msg: 'Введите пароль');
+                      Vibrate.vibrate();
+                      return;
+                    }
+                    _loginBloc.add(
+                      LogIn(email: email, password: password),
+                    );
+                  },
                 ),
                 TaskTextButton(
                   text: 'Зарегистрироваться',
