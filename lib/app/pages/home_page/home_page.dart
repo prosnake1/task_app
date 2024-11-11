@@ -64,6 +64,9 @@ class _HomePageState extends State<HomePage> {
                     height: 32,
                   ),
                   itemBuilder: (context, i) {
+                    state.list.sort(
+                      (a, b) => a.name.length.compareTo(b.name.length),
+                    );
                     state.list.sort((a, b) => a.name
                         .toString()
                         .toLowerCase()

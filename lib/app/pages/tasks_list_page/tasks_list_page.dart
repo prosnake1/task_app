@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/pages/tasks_list_page/widgets/widgets.dart';
 import 'package:task_app/domain/repositories/task/models/task.dart';
@@ -54,41 +55,60 @@ class _ListPageState extends State<ListPage> {
                 );
               }
               return SingleChildScrollView(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.tasks.length,
-                  separatorBuilder: (context, index) => const Divider(
-                    height: 32,
-                  ),
-                  itemBuilder: (context, i) {
-                    final tasks = state.tasks;
-                    sort(tasks);
-                    return TaskCard(
-                      task: tasks[i],
-                      onTap: () {
-                        context.goNamed(
-                          'task',
-                          extra: widget.title,
-                          pathParameters: {
-                            'title': widget.title,
-                            'name': tasks[i].name,
-                          },
-                          queryParameters: {
-                            'desc': tasks[i].desc,
-                          },
-                        );
-                      },
-                      onPressed: () async {
-                        _tasksListBloc.add(
-                          RemoveTask(
-                            id: tasks[i].id,
-                            parent: widget.title.toString(),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const Expanded(child: SizedBox()),
+                        InkWell(
+                          onTap: () {},
+                          child: const Row(
+                            children: [
+                              Text('Сортировка'),
+                              Icon(Icons.sort_rounded),
+                            ],
                           ),
+                        ),
+                      ],
+                    ),
+                    5.ph,
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.tasks.length,
+                      separatorBuilder: (context, index) => const Divider(
+                        height: 32,
+                      ),
+                      itemBuilder: (context, i) {
+                        final tasks = state.tasks;
+                        sort(tasks);
+                        return TaskCard(
+                          task: tasks[i],
+                          onTap: () {
+                            context.goNamed(
+                              'task',
+                              extra: widget.title,
+                              pathParameters: {
+                                'title': widget.title,
+                                'name': tasks[i].name,
+                              },
+                              queryParameters: {
+                                'desc': tasks[i].desc,
+                              },
+                            );
+                          },
+                          onPressed: () async {
+                            _tasksListBloc.add(
+                              RemoveTask(
+                                id: tasks[i].id,
+                                parent: widget.title.toString(),
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
+                    ),
+                  ],
                 ),
               );
             }
@@ -110,6 +130,9 @@ class _ListPageState extends State<ListPage> {
   }
 
   void sort(List<Task> tasks) {
+    tasks.sort(
+      (a, b) => a.name.length.compareTo(b.name.length),
+    );
     tasks.sort(
       (a, b) => a.name.compareTo(b.name),
     );
