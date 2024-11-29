@@ -18,8 +18,12 @@ class TaskTextButton extends StatelessWidget {
       child: TextButton(
         onPressed: (isActivated == null || isActivated != false) ? onTap : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          disabledBackgroundColor: color?.withOpacity(0.4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          backgroundColor: color ?? Theme.of(context).primaryColor,
+          disabledBackgroundColor: color?.withOpacity(0.4) ??
+              Theme.of(context).primaryColor.withOpacity(0.4),
         ),
         child: SizedBox(
           width: 340,

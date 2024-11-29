@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_app/app/theme/colors.dart';
 
 final lightTheme = ThemeData(
+  primaryColor: const Color.fromRGBO(38, 136, 235, 1),
   fontFamily: 'VKSansDisplay',
   scaffoldBackgroundColor: ThemeColors.background,
   appBarTheme: const AppBarTheme(
@@ -14,15 +15,6 @@ final lightTheme = ThemeData(
       fontFamily: "VKSansDisplay",
       color: Colors.black,
       fontSize: 22,
-    ),
-  ),
-  textButtonTheme: TextButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: ThemeColors.primary,
-      disabledBackgroundColor: ThemeColors.primary.withOpacity(0.4),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -43,6 +35,8 @@ final lightTheme = ThemeData(
   textTheme: const TextTheme(
     bodyMedium: TextStyle(
         fontSize: 20, fontFamily: 'VKSansDisplay', fontWeight: FontWeight.w600),
+    labelSmall: TextStyle(
+        fontSize: 16, fontFamily: 'VKSansDisplay', fontWeight: FontWeight.w600),
     labelMedium: TextStyle(
       fontSize: 14,
       color: Color.fromRGBO(129, 140, 153, 1),
@@ -52,6 +46,15 @@ final lightTheme = ThemeData(
     labelLarge: TextStyle(
       fontSize: 16,
       fontFamily: 'VKSansDisplay',
+    ),
+  ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    showDragHandle: true,
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(30),
+      ),
     ),
   ),
 );

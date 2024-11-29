@@ -12,10 +12,16 @@ class TaskService implements AbstractTaskService {
       .child(FirebaseAuth.instance.currentUser!.uid)
       .child('lists');
   @override
-  Future<DataSnapshot> getTasks(String name) async {
+  Future<DataSnapshot> getTasks(String listId, String? id) async {
     try {
-      final DatabaseReference databaseRef = listRef.child(name).child('tasks');
-      DatabaseEvent event = await databaseRef.once();
+      final ref = listRef.child(listId).child('tasks').orderByKey();
+      Query query;
+      if (id == null) {
+        query = ref.limitToFirst(6);
+      } else {
+        query = ref.startAt(id).limitToFirst(6);
+      }
+      DatabaseEvent event = await query.once();
       DataSnapshot snapshot = event.snapshot;
       return snapshot;
     } catch (e) {

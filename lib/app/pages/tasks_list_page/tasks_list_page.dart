@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:task_app/app/extensions/custom_padding.dart';
 import 'package:task_app/app/pages/tasks_list_page/bloc/tasks_list_bloc.dart';
 import 'package:task_app/app/pages/tasks_list_page/widgets/widgets.dart';
+import 'package:task_app/app/theme/theme.dart';
+import 'package:task_app/data/services/sorts/sorts_repository.dart';
+import 'package:task_app/domain/repositories/sorts/models/sorts.dart';
 import 'package:task_app/domain/repositories/task/models/task.dart';
 
 class ListPage extends StatefulWidget {
@@ -18,7 +21,11 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   final _tasksListBloc = GetIt.I.get<TasksListBloc>();
+
   DateTime now = DateTime.now();
+
+  bool containsTime = false;
+
   @override
   void initState() {
     _tasksListBloc.add(LoadTasks(name: widget.title));
@@ -61,7 +68,45 @@ class _ListPageState extends State<ListPage> {
                       children: [
                         const Expanded(child: SizedBox()),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            showModalBottomSheet(
+                              enableDrag: true,
+                              context: context,
+                              builder: (context) {
+                                List<Sorts> sorts = getSorts();
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Сортировка'),
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, i) {
+                                        return ListTile(
+                                          enabled: (containsTime == false &&
+                                                  sorts[i].option == 'date')
+                                              ? false
+                                              : true,
+                                          titleTextStyle:
+                                              lightTheme.textTheme.labelSmall,
+                                          title: Text(sorts[i].name),
+                                          onTap: () {
+                                            tasks = SortsRepository()
+                                                .sort(sorts[i].option, tasks);
+                                            setState(() {});
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) =>
+                                          const Divider(),
+                                      itemCount: sorts.length,
+                                    )
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           child: const Row(
                             children: [
                               Text('Сортировка'),
@@ -81,7 +126,9 @@ class _ListPageState extends State<ListPage> {
                       ),
                       itemBuilder: (context, i) {
                         final tasks = state.tasks;
-                        sort(tasks);
+                        if (tasks[i].time.isNotEmpty) {
+                          containsTime = true;
+                        }
                         return TaskCard(
                           task: tasks[i],
                           onTap: () {
@@ -156,25 +203,27 @@ class _ListPageState extends State<ListPage> {
       },
     );
   }
+}
 
-  // List<Task> sortByTime(List<Task> tasks, LoadedTasksList state) {
-  //   tasks.sort(
-  //     (a, b) => a.time.compareTo(b.time),
-  //   );
-  //   setState(() {
-  //     tasks = state.tasks;
-  //   });
-  //   return tasks;
-  // }
+class TaskSortTile extends StatelessWidget {
+  const TaskSortTile({
+    super.key,
+    required this.text,
+    required this.onTap,
+  });
+  final String text;
+  final Function() onTap;
 
-  // void sortByName(List<Task> tasks) {
-  //   tasks.sort(
-  //     (a, b) => a.name.toString().toLowerCase().compareTo(
-  //           b.name.toString().toLowerCase(),
-  //         ),
-  //   );
-  //   setState(() {
-  //     tasks;
-  //   });
-  // }
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: onTap,
+      title: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 }
